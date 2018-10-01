@@ -1,0 +1,36 @@
+{
+  "name": "mydata-cv",
+  "version": "0.0.0",
+  "description": "A Data Source/Data Sink offering a searchable CV",
+  "main": "server.js",
+  "scripts": {
+    "start": "next start",
+    "build": "next build",
+    "dev": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/JobtechSwe/mydata-cv.git"
+  },
+  "contributors": [
+    "Adam Näslund <adam.naslund@iteam.se>",
+    "Einar Persson <einar.persson@iteam.se>",
+    "Johan Öbrink <johan.obrink@iteam.se>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JobtechSwe/mydata-cv/issues"
+  },
+  "homepage": "https://github.com/JobtechSwe/mydata-cv#readme",
+  "dependencies": {
+    "elastic-apm-js-base": "^1.0.0",
+    "elastic-apm-node": "^1.12.0",
+    "express": "^4.16.3",
+    "next": "^7.0.1",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
+}
