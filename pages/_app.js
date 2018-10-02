@@ -6,8 +6,9 @@ export default class MyDataCV extends App {
   static async getInitialProps({ Component, router, ctx }) {
     let pageProps = {}
 
+    // TODO: Is this right?
     if (Component.getInitialProps) {
-      pageProps = await Container.getInitialProps(ctx)
+      pageProps = await Component.getInitialProps(ctx)
     }
 
     return { pageProps }
