@@ -8,14 +8,17 @@ import getConfig from 'next/config'
 const { publicRuntimeConfig } = getConfig()
 
 export default class ConnectPage extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      mode: 'connect'
+    }
+  }
+
   render() {
-    return (
-      <div>
-        <ConnectForm />
-        <Connecting />
-        <ConnectDone />
-        <ConnectError />
-      </div>
-    )
+    if(this.state.mode === 'connect') return <ConnectForm />
+    if(this.state.mode === 'connecting') return <Connecting />
+    if(this.state.mode === 'done') return <ConnectDone />
+    if(this.state.mode === 'error')  return <ConnectError />
   }
 }

@@ -12,6 +12,15 @@ describe('pages/ConnectPage', () => {
 
     expect(page.find('ConnectForm').exists()).toEqual(true)
   })
+
+  it('renders "done"', () => {
+    const page = shallow(<ConnectPage />)
+    page.setState({
+      mode: 'done'
+    })
+
+    expect(page.find('ConnectDone').exists()).toEqual(true)
+  })
 })
 
 describe('With Snapshot Testing', () => {

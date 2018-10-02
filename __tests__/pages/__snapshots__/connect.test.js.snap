@@ -1,32 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`With Snapshot Testing renders 1`] = `
-<div>
-  <form
-    onSubmit={[Function]}
-  >
-    <label>
-      Name:
-      <input
-        onChange={[Function]}
-        type="text"
-        value=""
-      />
-    </label>
+<form
+  onSubmit={[Function]}
+>
+  <label>
+    Name:
     <input
-      id="submit"
-      type="submit"
-      value="Submit"
+      onChange={[Function]}
+      type="text"
+      value=""
     />
-  </form>
-  <div>
-    Connecting...
-  </div>
-  <div>
-    Done
-  </div>
-  <div>
-    Error
-  </div>
-</div>
+  </label>
+  <input
+    id="submit"
+    type="submit"
+    value="Submit"
+  />
+</form>
 `;
