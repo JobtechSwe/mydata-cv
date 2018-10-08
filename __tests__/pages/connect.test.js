@@ -23,7 +23,7 @@ describe('pages/ConnectPage', () => {
   })
 })
 
-describe('With Snapshot Testing', () => {
+xdescribe('With Snapshot Testing', () => {
   it('renders', () => {
     const component = renderer.create(<ConnectPage />)
     const tree = component.toJSON()
