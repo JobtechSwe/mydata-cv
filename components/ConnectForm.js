@@ -1,9 +1,5 @@
 import { Component } from 'react'
-import axios from 'axios'
-import getConfig from 'next/config'
-
-const { publicRuntimeConfig: { operatorUrl } } = getConfig()
-
+import { requestConsent } from '../services/operator'
 
 export default class ConnectForm extends Component {
   constructor(props) {
@@ -25,7 +21,8 @@ export default class ConnectForm extends Component {
         error: 'Id cannot be empty'
       })
     } else {
-      const result = await axios.post(`${operatorUrl}/consents`, {})
+      const result = await requestConsent({ id: this.state.value })
+      this.props.onConsentRequest(result)
     }
   }
 

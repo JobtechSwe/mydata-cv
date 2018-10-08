@@ -1,11 +1,9 @@
-/* eslint-env jest */
-
 import { shallow } from 'enzyme'
 import React from 'react'
-import renderer from 'react-test-renderer'
 import ConnectForm from '../../components/ConnectForm'
-import axios from 'axios'
-jest.mock('axios')
+
+import * as operatorService from '../../services/operator'
+jest.mock('../../services/operator.js')
 
 describe('components/ConnectForm', () => {
   it('renders', () => {
@@ -37,12 +35,14 @@ describe('components/ConnectForm', () => {
     expect(component.find('.error').text()).toEqual('')
   })
 
-  it('posts to operator on submit', () => {
-    const component = shallow(<ConnectForm />)
+  it('calls operator service on submit', async () => {
+    const spy = jest.fn()
+    const component = shallow(<ConnectForm onConsentRequest={spy} />)
 
     component.find('input[name="id"]').simulate('change', { target: { value: 'my-fantastic-data-id' } })
     component.find('form').simulate('submit', new Event('foo'))
 
-    expect(axios.post).toBeCalled()
+    expect(operatorService.requestConsent)
+      .toHaveBeenCalledWith({ id: 'my-fantastic-data-id' })
   })
 })
