@@ -1,7 +1,7 @@
-import { Component } from 'react'
+import React, { Component } from 'react'
 
 export default class ConnectError extends Component {
-  render() {
+  render () {
     return <div>Error</div>
   }
 }

@@ -1,5 +1,4 @@
-
-function getEnvVars(env) {
+function getEnvVars (env) {
   if (env === 'production') {
     return 'https://operator.mydata.work'
   } else if (env === 'test') {

@@ -3,7 +3,7 @@ import App, { Container } from 'next/app'
 import { init as initApm } from 'elastic-apm-js-base'
 
 export default class MyDataCV extends App {
-  static async getInitialProps({ Component, router, ctx }) {
+  static async getInitialProps ({ Component, router, ctx }) {
     let pageProps = {}
 
     // TODO: Is this right?
@@ -14,7 +14,7 @@ export default class MyDataCV extends App {
     return { pageProps }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     const apm = initApm({
 
       // Set required service name (allowed characters: a-z, A-Z, 0-9, -, _, and space)
@@ -29,7 +29,7 @@ export default class MyDataCV extends App {
     apm.setInitialPageLoadName(window.location.href)
   }
 
-  render() {
+  render () {
     const { Component, pageProps } = this.props
 
     return (

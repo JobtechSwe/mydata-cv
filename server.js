@@ -7,7 +7,7 @@ const apm = require('elastic-apm-node').start({
   secretToken: '',
 
   // Set custom APM Server URL (default: http://localhost:8200)
-  serverUrl: process.env.APM_SERVER || 'http://localhost:8200',
+  serverUrl: process.env.APM_SERVER || 'http://localhost:8200'
 })
 
 const next = require('next')

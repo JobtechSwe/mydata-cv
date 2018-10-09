@@ -1,7 +1,7 @@
-import { Component } from 'react'
+import React, { Component } from 'react'
 
 export default class Connecting extends Component {
-  render() {
+  render () {
     return <div>Connecting...</div>
   }
 }

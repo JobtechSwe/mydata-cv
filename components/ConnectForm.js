@@ -1,20 +1,20 @@
-import { Component } from 'react'
+import React, { Component } from 'react'
 import { requestConsent } from '../services/operator'
 
 export default class ConnectForm extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
-    this.state = {value: '', error: ''}
+    this.state = { value: '', error: '' }
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleChange(event) {
-    this.setState({value: event.target.value, error: ''})
+  handleChange (event) {
+    this.setState({ value: event.target.value, error: '' })
   }
 
-  async handleSubmit(event) {
+  async handleSubmit (event) {
     event.preventDefault()
     if (!this.state.value) {
       this.setState({
@@ -26,14 +26,14 @@ export default class ConnectForm extends Component {
     }
   }
 
-  render() {
+  render () {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
           Name:
           <input name="id" type="text" value={this.state.value} onChange={this.handleChange} />
         </label>
-        <input type="submit" value="Submit" id="submit"/>
+        <input type="submit" value="Submit" id="submit" />
         <p className="error">{this.state.error}</p>
       </form>
     )
