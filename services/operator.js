@@ -15,5 +15,5 @@ export async function requestConsent (accountId) {
 }
 
 export async function getConsent (consentId) {
-  return {}
+  return axios.get(`${operatorUrl}/consents?id=${consentId}`)
 }
