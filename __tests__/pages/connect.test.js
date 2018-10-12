@@ -70,6 +70,26 @@ describe('pages/ConnectPage', () => {
       expect(page.state().consentId).toEqual('1234')
     })
   })
+
+  describe('#onConsentApproved', () => {
+    it('Sets mode to done', () => {
+      const page = shallow(<ConnectPage />)
+      const instance = page.instance()
+
+      instance.onConsentApproved({id: '1234'})
+      expect(page.state().mode).toEqual('done')
+    })
+  })
+
+  describe('#onConsentRejected', () => {
+    it('Sets mode to error', () => {
+      const page = shallow(<ConnectPage />)
+      const instance = page.instance()
+
+      instance.onConsentRejected({error: 'something went wrong'})
+      expect(page.state().mode).toEqual('error')
+    })
+  })
 })
 
 // TODO: restore

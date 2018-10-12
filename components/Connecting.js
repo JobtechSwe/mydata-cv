@@ -2,13 +2,19 @@ import React, { Component } from 'react'
 import { getConsent } from '../services/operator'
 
 export default class Connecting extends Component {
-  constructor(props) {
-    super(props)
+  async componentDidMount() {
+    await this.getConsents()
   }
 
-  componentDidMount() {
-    getConsent()
+  getConsents = async () => {
+    try {
+      const consent = await getConsent(this.props.consentId)
+      this.props.onConsentApproved(consent)
+    } catch (error) {
+      this.props.onConsentRejected(error)
+    }
   }
+
   render () {
     return <div className="connectingMessage">Connecting...</div>
   }

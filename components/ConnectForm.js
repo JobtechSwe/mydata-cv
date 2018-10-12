@@ -2,19 +2,13 @@ import React, { Component } from 'react'
 import { requestConsent } from '../services/operator'
 
 export default class ConnectForm extends Component {
-  constructor (props) {
-    super(props)
-    this.state = { value: '', error: '' }
+  state = { value: '', error: '' }
 
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-  }
-
-  handleChange (event) {
+  handleChange = (event) => {
     this.setState({ value: event.target.value, error: '' })
   }
 
-  async handleSubmit (event) {
+  handleSubmit = async (event) => {
     event.preventDefault()
     if (!this.state.value) {
       this.setState({
