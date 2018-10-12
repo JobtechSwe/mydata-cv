@@ -21,8 +21,14 @@ export default class ConnectForm extends Component {
         error: 'Id cannot be empty'
       })
     } else {
-      const result = await requestConsent({ id: this.state.value })
-      this.props.onConsentRequest(result)
+      try {
+        const result = await requestConsent({ accountId: this.state.value })
+        this.props.onConsentRequest(result.consentId)
+      } catch (error) {
+        this.setState({
+          error: 'Could not request consent for this account id'
+        })
+      }
     }
   }
 

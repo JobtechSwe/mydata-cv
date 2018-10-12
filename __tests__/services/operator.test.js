@@ -5,10 +5,17 @@ jest.mock('axios')
 describe('operator', () => {
   describe('#requestConsent', () => {
     it('posts to operator', async () => {
-      operator.requestConsent({ id: 'my-fantastic-data-id' })
+      operator.requestConsent('my-fantastic-data-id')
 
       expect(axios.post)
-        .toHaveBeenCalledWith('aTotallyLegitOperatorUrl/consents', { id: 'my-fantastic-data-id' })
+        .toHaveBeenCalledWith('aTotallyLegitOperatorUrl/consents',
+          { account_id: 'my-fantastic-data-id',
+            client_id: 'changeMe',
+            scope: [
+              'career'
+            ],
+            description: 'MyData CV example service requires this consent in order to provide value to the user'
+         })
     })
   })
 })

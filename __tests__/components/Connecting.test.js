@@ -1,12 +1,22 @@
-/*
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import React from 'react'
 import Connecting from '../../components/Connecting'
+import * as operatorService from '../../services/operator'
+jest.mock('../../services/operator.js')
 
-import axios from 'axios'
-jest.mock('axios')
-*/
+describe('components/Connecting', () => {
+  it('renders connecting message', () => {
+    const component = shallow(<Connecting/>)
+    expect(component.find('.connectingMessage').exists()).toEqual(true)
+  })
 
-xit('does something', () => {
-  // TODO: writeme
+  it('calls operator service', () => {
+    const component = mount(<Connecting/>)
+    expect(operatorService.getConsent).toBeCalled()
+  })
+
+  it('calls operator service', () => {
+    const component = mount(<Connecting/>)
+    expect(operatorService.getConsent).toBeCalled()
+  })
 })

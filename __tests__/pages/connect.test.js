@@ -23,30 +23,30 @@ describe('pages/ConnectPage', () => {
   })
 
   describe('.mode', () => {
-    it('Shows connect form as default', () => {
+    it('Shows ConnectForm as default', () => {
       const page = shallow(<ConnectPage />)
       expect(page.find('ConnectForm').exists()).toEqual(true)
     })
 
-    it('Shows connect form for mode connect', () => {
+    it('Shows ConnectForm for mode connect', () => {
       const page = shallow(<ConnectPage />)
       page.setState({ mode: 'connect' })
       expect(page.find('ConnectForm').exists()).toEqual(true)
     })
 
-    it('Shows connect form for mode connecting', () => {
+    it('Shows Connecting for mode connecting', () => {
       const page = shallow(<ConnectPage />)
       page.setState({ mode: 'connecting' })
       expect(page.find('Connecting').exists()).toEqual(true)
     })
 
-    it('Shows connect form for mode done', () => {
+    it('Shows ConnectDone for mode done', () => {
       const page = shallow(<ConnectPage />)
       page.setState({ mode: 'done' })
       expect(page.find('ConnectDone').exists()).toEqual(true)
     })
 
-    it('Shows connect form for mode error', () => {
+    it('Shows ConnectError for mode error', () => {
       const page = shallow(<ConnectPage />)
       page.setState({ mode: 'error' })
       expect(page.find('ConnectError').exists()).toEqual(true)

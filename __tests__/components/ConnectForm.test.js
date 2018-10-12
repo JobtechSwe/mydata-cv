@@ -1,9 +1,8 @@
 import { shallow } from 'enzyme'
 import React from 'react'
 import ConnectForm from '../../components/ConnectForm'
-
 import * as operatorService from '../../services/operator'
-jest.mock('../../services/operator.js')
+jest.mock('../../services/operator')
 
 describe('components/ConnectForm', () => {
   it('renders', () => {
@@ -35,14 +34,49 @@ describe('components/ConnectForm', () => {
     expect(component.find('.error').text()).toEqual('')
   })
 
-  it('calls operator service on submit', async () => {
-    const spy = jest.fn()
-    const component = shallow(<ConnectForm onConsentRequest={spy} />)
+  it('calls operator service with accountId on submit', () => {
+    const component = shallow(<ConnectForm onConsentRequest={""} />)
 
     component.find('input[name="id"]').simulate('change', { target: { value: 'my-fantastic-data-id' } })
     component.find('form').simulate('submit', new Event('foo'))
 
     expect(operatorService.requestConsent)
-      .toHaveBeenCalledWith({ id: 'my-fantastic-data-id' })
+      .toHaveBeenCalledWith({ accountId: 'my-fantastic-data-id' })
+  })
+
+  it('calls onConsentRequest if operator service resolves', async () => {
+    operatorService.requestConsent.mockResolvedValue({ consentId: 'abc-consent-id-123' })
+    const spy = jest.fn()
+    const instance = shallow(<ConnectForm onConsentRequest={spy} />)
+      .setState({value: 'my-account-id'})
+      .instance()
+
+    await instance.handleSubmit(new Event('foo'))
+
+    expect(spy).toHaveBeenCalledWith('abc-consent-id-123')
+  })
+
+  it('does not call onConsentRequest if operator service rejects', async () => {
+    operatorService.requestConsent.mockRejectedValue('')
+    const spy = jest.fn()
+    const instance = shallow(<ConnectForm onConsentRequest={spy} />)
+      .setState({value: 'my-account-id'})
+      .instance()
+
+    await instance.handleSubmit(new Event('foo'))
+
+    expect(spy).toBeCalledTimes(0)
+  })
+
+  it('sets error state if operator service rejects', async () => {
+    operatorService.requestConsent.mockRejectedValue('')
+    const spy = jest.fn()
+    const instance = shallow(<ConnectForm onConsentRequest={spy} />)
+      .setState({value: 'my-account-id'})
+      .instance()
+
+    await instance.handleSubmit(new Event('foo'))
+
+    expect(instance.state.error).toEqual('Could not request consent for this account id')
   })
 })
