@@ -9,17 +9,17 @@ export default class ConnectPage extends Component {
       mode: 'connect'
     }
 
-  onConsentRequest = (consentId) => {
+  onConsentRequest = (consent) => {
     this.setState({
       mode: 'connecting',
-      consentId
+      consent: consent
     })
   }
 
   onConsentApproved = (consent) => {
     this.setState({
       mode: 'done',
-      consent
+      consent: consent
     })
   }
 
@@ -32,7 +32,7 @@ export default class ConnectPage extends Component {
 
   render () {
     if (this.state.mode === 'connect') return <ConnectForm onConsentRequest={this.onConsentRequest} />
-    if (this.state.mode === 'connecting') return <Connecting consentId={this.state.consentId} />
+    if (this.state.mode === 'connecting') return <Connecting consent={this.state.consent} onConsentRejected={this.onConsentRejected} onConsentApproved={this.onConsentApproved}/>
     if (this.state.mode === 'done') return <ConnectDone consent={this.state.consent} />
     if (this.state.mode === 'error') return <ConnectError error={this.state.error} />
   }

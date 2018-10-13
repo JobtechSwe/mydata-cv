@@ -36,7 +36,7 @@ describe('pages/ConnectPage', () => {
 
     it('Shows Connecting for mode connecting', () => {
       const page = shallow(<ConnectPage />)
-      page.setState({ mode: 'connecting' })
+      page.setState({ mode: 'connecting', consent: { id: '123'} })
       expect(page.find('Connecting').exists()).toEqual(true)
     })
 
@@ -54,20 +54,29 @@ describe('pages/ConnectPage', () => {
   })
 
   describe('#onConsentRequest', () => {
+    let consent
+
+    beforeEach(() => {
+      consent = {
+        data: { id: '1234'},
+        links: { self: '/consent/1234'}
+      }
+    })
+
     it('Sets mode to connecting', () => {
       const page = shallow(<ConnectPage />)
       const instance = page.instance()
 
-      instance.onConsentRequest('1234')
+      instance.onConsentRequest(consent)
       expect(page.state().mode).toEqual('connecting')
     })
 
-    it('Sets consentId', () => {
+    it('Sets consent', () => {
       const page = shallow(<ConnectPage />)
       const instance = page.instance()
 
-      instance.onConsentRequest('1234')
-      expect(page.state().consentId).toEqual('1234')
+      instance.onConsentRequest(consent)
+      expect(page.state().consent).toEqual(consent)
     })
   })
 

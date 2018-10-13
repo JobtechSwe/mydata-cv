@@ -41,11 +41,14 @@ describe('components/ConnectForm', () => {
     component.find('form').simulate('submit', new Event('foo'))
 
     expect(operatorService.requestConsent)
-      .toHaveBeenCalledWith({ accountId: 'my-fantastic-data-id' })
+      .toHaveBeenCalledWith('my-fantastic-data-id')
   })
 
   it('calls onConsentRequest if operator service resolves', async () => {
-    operatorService.requestConsent.mockResolvedValue({ consentId: 'abc-consent-id-123' })
+    operatorService.requestConsent.mockResolvedValue({
+      data: { id: 'abc-consent-id-123' },
+      links: { self: 'blabalba' }
+    })
     const spy = jest.fn()
     const instance = shallow(<ConnectForm onConsentRequest={spy} />)
       .setState({value: 'my-account-id'})
@@ -53,7 +56,10 @@ describe('components/ConnectForm', () => {
 
     await instance.handleSubmit(new Event('foo'))
 
-    expect(spy).toHaveBeenCalledWith('abc-consent-id-123')
+    expect(spy).toHaveBeenCalledWith({
+      data: { id: 'abc-consent-id-123' },
+      links: { self: 'blabalba' }
+    })
   })
 
   it('does not call onConsentRequest if operator service rejects', async () => {

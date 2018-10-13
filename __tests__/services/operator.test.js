@@ -6,11 +6,19 @@ jest.useFakeTimers()
 describe('operator', () => {
   describe('#requestConsent', () => {
     it('posts to operator', async () => {
-      await operator.requestConsent('my-fantastic-data-id')
+      const response = {
+        status: '201',
+        data: {
+          data: { id: '54524'},
+          links: { self: '/asdads/' }
+        }
+      }
+      axios.post.mockResolvedValue(response)
+      await operator.requestConsent('my-fantastic-account-id')
 
       expect(axios.post)
         .toHaveBeenCalledWith('aTotallyLegitOperatorUrl/consents',
-          { account_id: 'my-fantastic-data-id',
+          { account_id: 'my-fantastic-account-id',
             client_id: 'changeMe',
             scope: [
               'career'
@@ -18,14 +26,47 @@ describe('operator', () => {
             description: 'MyData CV example service requires this consent in order to provide value to the user'
          })
     })
+
+    it('unwraps response and returns data', async () => {
+      const response = {
+        status: '201',
+        data: {
+          data: { id: '54524'},
+          links: { self: '/asdads/' }
+        }
+      }
+      axios.post.mockResolvedValue(response)
+      const result = await operator.requestConsent('my-fantastic-account-id')
+      expect(result).toEqual({
+        data: { id: '54524'},
+        links: { self: '/asdads/' }
+      })
+    })
   })
 
   describe('#getConsent', () => {
-    it('does get request to operator', async () => {
-      await operator.getConsent('12345')
+    it('does get request to operator using the link provided', async () => {
+      await operator.getConsent({
+        data: {},
+        links: {
+          self: '/consents/abc123'
+        }
+      })
 
       expect(axios.get)
-        .toHaveBeenCalledWith('aTotallyLegitOperatorUrl/consents?id=12345')
+        .toHaveBeenCalledWith('aTotallyLegitOperatorUrl/consents/abc123')
+    })
+
+    it('does not do request to operator if consentId is undefined', async () => {
+      try {
+        await operator.getConsent(undefined)
+      } catch (e) { }
+      expect(axios.get).not.toHaveBeenCalled()
+    })
+
+    it('rejects if consentId is undefined', async () => {
+      await expect(operator.getConsent(undefined))
+        .rejects.toEqual(new Error('Cannot get undefined consent'))
     })
   })
 })

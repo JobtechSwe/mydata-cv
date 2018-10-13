@@ -8,7 +8,7 @@ export default class Connecting extends Component {
 
   getConsents = async () => {
     try {
-      const consent = await getConsent(this.props.consentId)
+      const consent = await getConsent(this.props.consent)
       this.props.onConsentApproved(consent)
     } catch (error) {
       this.props.onConsentRejected(error)

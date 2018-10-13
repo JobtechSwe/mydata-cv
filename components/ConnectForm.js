@@ -16,8 +16,8 @@ export default class ConnectForm extends Component {
       })
     } else {
       try {
-        const result = await requestConsent({ accountId: this.state.value })
-        this.props.onConsentRequest(result.consentId)
+        const {data, links} = await requestConsent(this.state.value)
+        this.props.onConsentRequest({data, links})
       } catch (error) {
         this.setState({
           error: 'Could not request consent for this account id'
