@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { getConsent } from '../services/operator'
+import Typography from '@material-ui/core/Typography'
 
 export default class Connecting extends Component {
   async componentDidMount() {
@@ -8,7 +9,7 @@ export default class Connecting extends Component {
 
   getConsents = async () => {
     try {
-      const consent = await getConsent(this.props.consent)
+      const consent = await getConsent(this.props.consent.links.self)
       this.props.onConsentApproved(consent)
     } catch (error) {
       this.props.onConsentRejected(error)
@@ -16,6 +17,6 @@ export default class Connecting extends Component {
   }
 
   render () {
-    return <div className="connectingMessage">Connecting...</div>
+    return <Typography component="h1" variant="h5">Connecting...</Typography>
   }
 }

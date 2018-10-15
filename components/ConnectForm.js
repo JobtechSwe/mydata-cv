@@ -1,5 +1,13 @@
 import React, { Component } from 'react'
 import { requestConsent } from '../services/operator'
+import styled from 'styled-components'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
+
+const Form = styled.form`
+  width: 100%;
+`
 
 export default class ConnectForm extends Component {
   state = { value: '', error: '' }
@@ -28,14 +36,37 @@ export default class ConnectForm extends Component {
 
   render () {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Name:
-          <input name="id" type="text" value={this.state.value} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Submit" id="submit" />
-        <p className="error">{this.state.error}</p>
-      </form>
+        <Form
+          onSubmit={this.handleSubmit}
+          name="form"
+          >
+         <Typography
+          component="h1"
+          variant="h5"
+        >
+          Connect to MyData
+        </Typography>
+          <TextField
+            label="MyData ID"
+            name="id"
+            type="text"
+            value={this.state.value}
+            onChange={this.handleChange}
+            fullWidth
+            helperText={this.state.error}
+            error={!!this.state.error}
+            autoFocus
+          />
+          <Button
+            type="submit"
+            id="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            >
+            OK
+          </Button>
+        </Form>
     )
   }
 }

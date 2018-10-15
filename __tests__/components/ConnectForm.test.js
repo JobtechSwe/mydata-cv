@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import React from 'react'
 import ConnectForm from '../../components/ConnectForm'
 import * as operatorService from '../../services/operator'
@@ -6,39 +6,41 @@ jest.mock('../../services/operator')
 
 describe('components/ConnectForm', () => {
   it('renders', () => {
-    const component = shallow(<ConnectForm />)
+    const component = mount(<ConnectForm />)
     expect(component.find('form').exists()).toEqual(true)
   })
 
   it('updates state on change', () => {
     const component = shallow(<ConnectForm />)
 
-    component.find('input[name="id"]').simulate('change', { target: { value: 'my-fantastic-data-id' } })
+    component.find('[name="id"]').simulate('change', { target: { value: 'my-fantastic-data-id' } })
 
     expect(component.state().value).toEqual('my-fantastic-data-id')
   })
 
   it('does not submit if id is empty', () => {
-    const component = shallow(<ConnectForm />)
+    const component = mount(<ConnectForm />)
 
     component.find('form').simulate('submit', new Event('foo'))
-    expect(component.find('.error').text()).toEqual('Id cannot be empty')
+    expect(component.find('p').text()).toEqual('Id cannot be empty')
   })
 
   it('clears error on change', () => {
     const component = shallow(<ConnectForm />)
+    const instance = component.instance()
 
-    component.find('form').simulate('submit', new Event('foo'))
-    component.find('input[name="id"]').simulate('change', { target: { value: 'my-fantastic-data-id' } })
+    instance.handleSubmit(new Event('foo'))
+    component.find('[name="id"]').simulate('change', { target: { value: 'my-fantastic-data-id' } })
 
-    expect(component.find('.error').text()).toEqual('')
+    expect(component.find('p').exists()).toBe(false)
   })
 
   it('calls operator service with accountId on submit', () => {
     const component = shallow(<ConnectForm onConsentRequest={""} />)
+    const instance = component.instance()
 
-    component.find('input[name="id"]').simulate('change', { target: { value: 'my-fantastic-data-id' } })
-    component.find('form').simulate('submit', new Event('foo'))
+    component.find('[name="id"]').simulate('change', { target: { value: 'my-fantastic-data-id' } })
+    instance.handleSubmit(new Event('foo'))
 
     expect(operatorService.requestConsent)
       .toHaveBeenCalledWith('my-fantastic-data-id')

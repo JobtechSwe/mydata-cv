@@ -1,7 +1,6 @@
 import * as operator from '../../services/operator'
 import axios from 'axios'
 jest.mock('axios')
-jest.useFakeTimers()
 
 describe('operator', () => {
   describe('#requestConsent', () => {
@@ -46,12 +45,15 @@ describe('operator', () => {
 
   describe('#getConsent', () => {
     it('does get request to operator using the link provided', async () => {
-      await operator.getConsent({
-        data: {},
-        links: {
-          self: '/consents/abc123'
+      const response = {
+        status: '201',
+        data: {
+          data: { id: 'asdsd', status: 'approved'},
+          links: { self: 'asd' }
         }
-      })
+      }
+      axios.get.mockResolvedValue(response)
+      await operator.getConsent('/consents/abc123')
 
       expect(axios.get)
         .toHaveBeenCalledWith('aTotallyLegitOperatorUrl/consents/abc123')

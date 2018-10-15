@@ -2,6 +2,8 @@ import axios from 'axios'
 import getConfig from 'next/config'
 const { publicRuntimeConfig: { operatorUrl } } = getConfig()
 
+const wait = (ms) => new Promise(resolve => setTimeout(() => resolve(), ms ))
+
 export async function requestConsent (accountId) {
   const consentRequest = {
     account_id: accountId,
@@ -20,7 +22,12 @@ export async function requestConsent (accountId) {
   }
 }
 
-export async function getConsent (consent) {
-  if(!consent) throw new Error('Cannot get undefined consent')
-  return axios.get(`${operatorUrl}${consent.links.self}`)
+export async function getConsent (link) {
+  if(!link) throw new Error('Cannot get undefined consent')
+
+  const response = await axios.get(`${operatorUrl}${link}`)
+  if (response.data.data.status === 'approved') return response.data
+
+  await wait(5000)
+  return await getConsent(link)
 }

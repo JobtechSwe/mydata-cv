@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import React from 'react'
 import Connecting from '../../components/Connecting'
 import * as operatorService from '../../services/operator'
@@ -15,8 +15,8 @@ describe('components/Connecting', () => {
   })
 
   it('renders connecting message', () => {
-    const component = shallow(<Connecting onConsentApproved={jest.fn()} consent={consent}/>)
-    expect(component.find('.connectingMessage').exists()).toEqual(true)
+    const component = mount(<Connecting onConsentApproved={jest.fn()} consent={consent}/>)
+    expect(component.find('h1').exists()).toEqual(true)
   })
 
   it('calls operator service', () => {
@@ -26,7 +26,7 @@ describe('components/Connecting', () => {
 
   it('calls operator service with consent', () => {
     const component = shallow(<Connecting onConsentApproved={jest.fn()} consent={consent}/>)
-    expect(operatorService.getConsent).toBeCalledWith(consent)
+    expect(operatorService.getConsent).toBeCalledWith(consent.links.self)
   })
 
   it('calls onConsentApproved if operatorService resolves', async () => {

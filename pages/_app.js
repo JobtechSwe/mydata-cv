@@ -1,6 +1,7 @@
 import React from 'react'
 import App, { Container } from 'next/app'
 import { init as initApm } from 'elastic-apm-js-base'
+import CssBaseline from '@material-ui/core/CssBaseline'
 
 export default class MyDataCV extends App {
   static async getInitialProps ({ Component, router, ctx }) {
@@ -33,9 +34,12 @@ export default class MyDataCV extends App {
     const { Component, pageProps } = this.props
 
     return (
-      <Container>
-        <Component {...pageProps} />
-      </Container>
+      <React.Fragment>
+        <CssBaseline />
+        <Container>
+          <Component {...pageProps} />
+        </Container>
+      </React.Fragment>
     )
   }
 }
