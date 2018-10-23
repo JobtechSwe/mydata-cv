@@ -29,5 +29,5 @@ export async function getConsent (link) {
   if (response.data.data.status === 'approved') return response.data
 
   await wait(5000)
-  return getConsent (link)
+  return getConsent(link)
 }
