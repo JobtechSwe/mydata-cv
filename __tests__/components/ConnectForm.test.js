@@ -36,7 +36,7 @@ describe('components/ConnectForm', () => {
   })
 
   it('calls operator service with accountId on submit', () => {
-    const component = shallow(<ConnectForm onConsentRequest={""} />)
+    const component = shallow(<ConnectForm onConsentRequest={''} />)
     const instance = component.instance()
 
     component.find('[name="id"]').simulate('change', { target: { value: 'my-fantastic-data-id' } })
@@ -53,7 +53,7 @@ describe('components/ConnectForm', () => {
     })
     const spy = jest.fn()
     const instance = shallow(<ConnectForm onConsentRequest={spy} />)
-      .setState({value: 'my-account-id'})
+      .setState({ value: 'my-account-id' })
       .instance()
 
     await instance.handleSubmit(new Event('foo'))
@@ -68,7 +68,7 @@ describe('components/ConnectForm', () => {
     operatorService.requestConsent.mockRejectedValue('')
     const spy = jest.fn()
     const instance = shallow(<ConnectForm onConsentRequest={spy} />)
-      .setState({value: 'my-account-id'})
+      .setState({ value: 'my-account-id' })
       .instance()
 
     await instance.handleSubmit(new Event('foo'))
@@ -80,7 +80,7 @@ describe('components/ConnectForm', () => {
     operatorService.requestConsent.mockRejectedValue('')
     const spy = jest.fn()
     const instance = shallow(<ConnectForm onConsentRequest={spy} />)
-      .setState({value: 'my-account-id'})
+      .setState({ value: 'my-account-id' })
       .instance()
 
     await instance.handleSubmit(new Event('foo'))

@@ -3,7 +3,7 @@ import { getConsent } from '../services/operator'
 import Typography from '@material-ui/core/Typography'
 
 export default class Connecting extends Component {
-  async componentDidMount() {
+  async componentDidMount () {
     await this.getConsents()
   }
 

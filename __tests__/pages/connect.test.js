@@ -36,7 +36,7 @@ describe('pages/ConnectPage', () => {
 
     it('Shows Connecting for mode connecting', () => {
       const page = shallow(<ConnectPage />)
-      page.setState({ mode: 'connecting', consent: { id: '123'} })
+      page.setState({ mode: 'connecting', consent: { id: '123' } })
       expect(page.find('Connecting').exists()).toEqual(true)
     })
 
@@ -58,8 +58,8 @@ describe('pages/ConnectPage', () => {
 
     beforeEach(() => {
       consent = {
-        data: { id: '1234'},
-        links: { self: '/consent/1234'}
+        data: { id: '1234' },
+        links: { self: '/consent/1234' }
       }
     })
 
@@ -85,7 +85,7 @@ describe('pages/ConnectPage', () => {
       const page = shallow(<ConnectPage />)
       const instance = page.instance()
 
-      instance.onConsentApproved({id: '1234'})
+      instance.onConsentApproved({ id: '1234' })
       expect(page.state().mode).toEqual('done')
     })
   })
@@ -95,7 +95,7 @@ describe('pages/ConnectPage', () => {
       const page = shallow(<ConnectPage />)
       const instance = page.instance()
 
-      instance.onConsentRejected({error: 'something went wrong'})
+      instance.onConsentRejected({ error: 'something went wrong' })
       expect(page.state().mode).toEqual('error')
     })
   })

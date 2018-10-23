@@ -23,8 +23,8 @@ const StyledPaper = styled(Paper)({
 
 export default class ConnectPage extends Component {
   state = {
-      mode: 'connect'
-    }
+    mode: 'connect'
+  }
 
   onConsentRequest = (consent) => {
     this.setState({
@@ -50,7 +50,7 @@ export default class ConnectPage extends Component {
   render () {
     let content
     if (this.state.mode === 'connect') content = <ConnectForm onConsentRequest={this.onConsentRequest} />
-    if (this.state.mode === 'connecting') content = <Connecting consent={this.state.consent} onConsentRejected={this.onConsentRejected} onConsentApproved={this.onConsentApproved}/>
+    if (this.state.mode === 'connecting') content = <Connecting consent={this.state.consent} onConsentRejected={this.onConsentRejected} onConsentApproved={this.onConsentApproved} />
     if (this.state.mode === 'done') content = <ConnectDone consent={this.state.consent} />
     if (this.state.mode === 'error') content = <ConnectError error={this.state.error} />
 

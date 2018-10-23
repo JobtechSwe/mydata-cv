@@ -8,7 +8,7 @@ describe('operator', () => {
       const response = {
         status: '201',
         data: {
-          data: { id: '54524'},
+          data: { id: '54524' },
           links: { self: '/asdads/' }
         }
       }
@@ -23,21 +23,21 @@ describe('operator', () => {
               'career'
             ],
             description: 'MyData CV example service requires this consent in order to provide value to the user'
-         })
+          })
     })
 
     it('unwraps response and returns data', async () => {
       const response = {
         status: '201',
         data: {
-          data: { id: '54524'},
+          data: { id: '54524' },
           links: { self: '/asdads/' }
         }
       }
       axios.post.mockResolvedValue(response)
       const result = await operator.requestConsent('my-fantastic-account-id')
       expect(result).toEqual({
-        data: { id: '54524'},
+        data: { id: '54524' },
         links: { self: '/asdads/' }
       })
     })
@@ -48,7 +48,7 @@ describe('operator', () => {
       const response = {
         status: '201',
         data: {
-          data: { id: 'asdsd', status: 'approved'},
+          data: { id: 'asdsd', status: 'approved' },
           links: { self: 'asd' }
         }
       }

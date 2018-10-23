@@ -9,30 +9,30 @@ describe('components/Connecting', () => {
 
   beforeEach(() => {
     consent = {
-      data: { id: '2344'},
-      links: { self: '/consent/2344'}
+      data: { id: '2344' },
+      links: { self: '/consent/2344' }
     }
   })
 
   it('renders connecting message', () => {
-    const component = mount(<Connecting onConsentApproved={jest.fn()} consent={consent}/>)
+    const component = mount(<Connecting onConsentApproved={jest.fn()} consent={consent} />)
     expect(component.find('h1').exists()).toEqual(true)
   })
 
   it('calls operator service', () => {
-    const component = shallow(<Connecting onConsentApproved={jest.fn()} consent={consent}/>)
+    shallow(<Connecting onConsentApproved={jest.fn()} consent={consent} />)
     expect(operatorService.getConsent).toHaveBeenCalled()
   })
 
   it('calls operator service with consent', () => {
-    const component = shallow(<Connecting onConsentApproved={jest.fn()} consent={consent}/>)
+    shallow(<Connecting onConsentApproved={jest.fn()} consent={consent} />)
     expect(operatorService.getConsent).toBeCalledWith(consent.links.self)
   })
 
   it('calls onConsentApproved if operatorService resolves', async () => {
     const spy = jest.fn()
-    operatorService.getConsent.mockResolvedValue({ id: 'blablab'})
-    const component = shallow(<Connecting onConsentApproved={spy} consent={consent}/>)
+    operatorService.getConsent.mockResolvedValue({ id: 'blablab' })
+    const component = shallow(<Connecting onConsentApproved={spy} consent={consent} />)
     const instance = component.instance()
 
     await instance.getConsents()
@@ -42,12 +42,12 @@ describe('components/Connecting', () => {
 
   it('calls onConsentRejected if operatorService rejects', async () => {
     const spy = jest.fn()
-    operatorService.getConsent.mockRejectedValue({ error_message: 'blablab'})
-    const component = shallow(<Connecting onConsentRejected={spy} consent={consent}/>)
+    operatorService.getConsent.mockRejectedValue({ error_message: 'blablab' })
+    const component = shallow(<Connecting onConsentRejected={spy} consent={consent} />)
     const instance = component.instance()
 
     await instance.getConsents()
 
-    expect(spy).toHaveBeenCalledWith({ error_message: 'blablab'})
+    expect(spy).toHaveBeenCalledWith({ error_message: 'blablab' })
   })
 })

@@ -24,8 +24,8 @@ export default class ConnectForm extends Component {
       })
     } else {
       try {
-        const {data, links} = await requestConsent(this.state.value)
-        this.props.onConsentRequest({data, links})
+        const { data, links } = await requestConsent(this.state.value)
+        this.props.onConsentRequest({ data, links })
       } catch (error) {
         this.setState({
           error: 'Could not request consent for this account id'
@@ -36,37 +36,37 @@ export default class ConnectForm extends Component {
 
   render () {
     return (
-        <Form
-          onSubmit={this.handleSubmit}
-          name="form"
-          >
-         <Typography
+      <Form
+        onSubmit={this.handleSubmit}
+        name="form"
+      >
+        <Typography
           component="h1"
           variant="h5"
         >
           Connect to MyData
         </Typography>
-          <TextField
-            label="MyData ID"
-            name="id"
-            type="text"
-            value={this.state.value}
-            onChange={this.handleChange}
-            fullWidth
-            helperText={this.state.error}
-            error={!!this.state.error}
-            autoFocus
-          />
-          <Button
-            type="submit"
-            id="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            >
+        <TextField
+          label="MyData ID"
+          name="id"
+          type="text"
+          value={this.state.value}
+          onChange={this.handleChange}
+          fullWidth
+          helperText={this.state.error}
+          error={!!this.state.error}
+          autoFocus
+        />
+        <Button
+          type="submit"
+          id="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+        >
             OK
-          </Button>
-        </Form>
+        </Button>
+      </Form>
     )
   }
 }
