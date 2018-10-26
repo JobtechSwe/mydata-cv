@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/JobtechSwe/mydata-cv#readme",
   "dependencies": {
-    "@material-ui/core": "^3.2.1",
+    "@smooth-ui/core-sc": "^7.0.3",
     "axios": "^0.18.0",
     "elastic-apm-js-base": "^1.0.0",
     "elastic-apm-node": "^1.12.0",
@@ -33,12 +33,13 @@
     "next": "^7.0.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "styled-components": "^3.4.10"
+    "styled-components": "^4.0.2"
   },
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
+    "babel-plugin-styled-components": "^1.8.0",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
     "enzyme-to-json": "^3.3.4",

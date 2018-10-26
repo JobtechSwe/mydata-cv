@@ -4,22 +4,21 @@ import ConnectDone from '../components/ConnectDone'
 import ConnectError from '../components/ConnectError'
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import Paper from '@material-ui/core/Paper'
+import { Box } from '@smooth-ui/core-sc'
 
 const Page = styled.div`
-  font-size: 2.5em;
   width: 400px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 15px;
 `
 
-const StyledPaper = styled(Paper)({
+/* const StyledPaper = styled(Paper)({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   padding: '15px'
-})
+}) */
 
 export default class ConnectPage extends Component {
   state = {
@@ -55,9 +54,9 @@ export default class ConnectPage extends Component {
     if (this.state.mode === 'error') content = <ConnectError error={this.state.error} />
 
     return <Page>
-      <StyledPaper>
+      <Box>
         {content}
-      </StyledPaper>
+      </Box>
     </Page>
   }
 }

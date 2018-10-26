@@ -11,9 +11,9 @@ describe('components/ConnectForm', () => {
   })
 
   it('updates state on change', () => {
-    const component = shallow(<ConnectForm />)
+    const component = mount(<ConnectForm />)
 
-    component.find('[name="id"]').simulate('change', { target: { value: 'my-fantastic-data-id' } })
+    component.find('input#account-id').simulate('change', { target: { value: 'my-fantastic-data-id' } })
 
     expect(component.state().value).toEqual('my-fantastic-data-id')
   })
@@ -22,24 +22,24 @@ describe('components/ConnectForm', () => {
     const component = mount(<ConnectForm />)
 
     component.find('form').simulate('submit', new Event('foo'))
-    expect(component.find('p').text()).toEqual('Id cannot be empty')
+    expect(component.find('.sui-control-feedback').text()).toEqual('Id cannot be empty')
   })
 
   it('clears error on change', () => {
-    const component = shallow(<ConnectForm />)
+    const component = mount(<ConnectForm />)
     const instance = component.instance()
 
     instance.handleSubmit(new Event('foo'))
-    component.find('[name="id"]').simulate('change', { target: { value: 'my-fantastic-data-id' } })
+    component.find('input#account-id').simulate('change', { target: { value: 'my-fantastic-data-id' } })
 
-    expect(component.find('p').exists()).toBe(false)
+    expect(component.find('div.sui-control-feedback').text()).toBe('')
   })
 
   it('calls operator service with accountId on submit', () => {
-    const component = shallow(<ConnectForm onConsentRequest={''} />)
+    const component = mount(<ConnectForm onConsentRequest={''} />)
     const instance = component.instance()
 
-    component.find('[name="id"]').simulate('change', { target: { value: 'my-fantastic-data-id' } })
+    component.find('input#account-id').simulate('change', { target: { value: 'my-fantastic-data-id' } })
     instance.handleSubmit(new Event('foo'))
 
     expect(operatorService.requestConsent)

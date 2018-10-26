@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { getConsent } from '../services/operator'
-import Typography from '@material-ui/core/Typography'
+import { Typography } from '@smooth-ui/core-sc'
 
 export default class Connecting extends Component {
   async componentDidMount () {
@@ -17,6 +17,6 @@ export default class Connecting extends Component {
   }
 
   render () {
-    return <Typography component="h1" variant="h5">Connecting...</Typography>
+    return <Typography variant="h5">Connecting...</Typography>
   }
 }

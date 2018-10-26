@@ -16,7 +16,8 @@ describe('components/Connecting', () => {
 
   it('renders connecting message', () => {
     const component = mount(<Connecting onConsentApproved={jest.fn()} consent={consent} />)
-    expect(component.find('h1').exists()).toEqual(true)
+
+    expect(component.find('h5').exists()).toEqual(true)
   })
 
   it('calls operator service', () => {
@@ -40,7 +41,7 @@ describe('components/Connecting', () => {
     expect(spy).toHaveBeenCalledWith({ id: 'blablab' })
   })
 
-  it('calls onConsentRejected if operatorService rejects', async () => {
+  it('calls onConsentRejected if operawtorService rejects', async () => {
     const spy = jest.fn()
     operatorService.getConsent.mockRejectedValue({ error_message: 'blablab' })
     const component = shallow(<Connecting onConsentRejected={spy} consent={consent} />)

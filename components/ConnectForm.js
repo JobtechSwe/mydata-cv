@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { requestConsent } from '../services/operator'
 import styled from 'styled-components'
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
+import { Button, FormGroup, Label, Input, ControlFeedback, Typography } from '@smooth-ui/core-sc'
 
 const Form = styled.form`
   width: 100%;
@@ -41,28 +39,29 @@ export default class ConnectForm extends Component {
         name="form"
       >
         <Typography
-          component="h1"
           variant="h5"
         >
           Connect to MyData
         </Typography>
-        <TextField
-          label="MyData ID"
-          name="id"
-          type="text"
-          value={this.state.value}
-          onChange={this.handleChange}
-          fullWidth
-          helperText={this.state.error}
-          error={!!this.state.error}
-          autoFocus
-        />
+        <FormGroup>
+          <Label htmlFor="account-id">MyData ID</Label>
+          <Input
+            type="text"
+            control id="account-id"
+            onChange={this.handleChange}
+            autoFocus
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            value={this.state.value}
+          />
+          <ControlFeedback valid={!this.state.error}>{this.state.error}</ControlFeedback>
+        </FormGroup>
         <Button
           type="submit"
           id="submit"
-          variant="contained"
-          color="primary"
-          fullWidth
+          variant="primary"
+          width="100%"
         >
             OK
         </Button>

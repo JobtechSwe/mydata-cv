@@ -1,7 +1,10 @@
 import React from 'react'
 import App, { Container } from 'next/app'
+import Head from 'next/head'
 import { init as initApm } from 'elastic-apm-js-base'
-import CssBaseline from '@material-ui/core/CssBaseline'
+import { globalStyle, createGlobalStyle } from '@smooth-ui/core-sc'
+
+const GlobalStyle = createGlobalStyle`${globalStyle()}`
 
 export default class MyDataCV extends App {
   static async getInitialProps ({ Component, router, ctx }) {
@@ -35,7 +38,10 @@ export default class MyDataCV extends App {
 
     return (
       <React.Fragment>
-        <CssBaseline />
+        <GlobalStyle />
+        <Head>
+          <title>CV</title>
+        </Head>
         <Container>
           <Component {...pageProps} />
         </Container>

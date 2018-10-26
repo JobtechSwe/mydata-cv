@@ -3,11 +3,17 @@
     "development": {
       "presets": [
         "next/babel"
+      ],
+      "plugins": [
+        "babel-plugin-styled-components"
       ]
     },
     "production": {
       "presets": [
         "next/babel"
+      ],
+      "plugins": [
+        "babel-plugin-styled-components"
       ]
     },
     "test": {
@@ -20,6 +26,9 @@
             }
           }
         ]
+      ],
+      "plugins": [
+        "babel-plugin-styled-components"
       ]
     }
   }
