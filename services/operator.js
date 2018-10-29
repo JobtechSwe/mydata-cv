@@ -31,3 +31,8 @@ export async function getConsent (link) {
   await wait(5000)
   return getConsent(link)
 }
+
+export async function getUserData (accountId) {
+  const response = await axios.get(`${operatorUrl}/accounts/${encodeURIComponent(accountId)}/data`)
+  return response.data.data
+}
