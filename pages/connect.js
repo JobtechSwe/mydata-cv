@@ -13,13 +13,6 @@ const Page = styled.div`
   margin-top: 15px;
 `
 
-/* const StyledPaper = styled(Paper)({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  padding: '15px'
-}) */
-
 export default class ConnectPage extends Component {
   state = {
     mode: 'connect'
@@ -47,15 +40,16 @@ export default class ConnectPage extends Component {
   }
 
   render () {
-    let content
-    if (this.state.mode === 'connect') content = <ConnectForm onConsentRequest={this.onConsentRequest} />
-    if (this.state.mode === 'connecting') content = <Connecting consent={this.state.consent} onConsentRejected={this.onConsentRejected} onConsentApproved={this.onConsentApproved} />
-    if (this.state.mode === 'done') content = <ConnectDone consent={this.state.consent} />
-    if (this.state.mode === 'error') content = <ConnectError error={this.state.error} />
-
     return <Page>
       <Box>
-        {content}
+        {this.state.mode === 'connect' && <ConnectForm onConsentRequest={this.onConsentRequest} />}
+        {this.state.mode === 'connecting' && <Connecting
+          consent={this.state.consent}
+          onConsentRejected={this.onConsentRejected}
+          onConsentApproved={this.onConsentApproved}
+        />}
+        {this.state.mode === 'done' && <ConnectDone consent={this.state.consent} />}
+        {this.state.mode === 'error' && <ConnectError error={this.state.error} />}
       </Box>
     </Page>
   }

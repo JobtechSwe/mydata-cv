@@ -18,7 +18,7 @@ describe('operator', () => {
       expect(axios.post)
         .toHaveBeenCalledWith('aTotallyLegitOperatorUrl/consents',
           { account_id: 'my-fantastic-account-id',
-            client_id: 'changeMe',
+            client_id: 'cv',
             scope: [
               'career'
             ],

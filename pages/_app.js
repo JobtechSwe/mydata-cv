@@ -1,8 +1,10 @@
 import React from 'react'
 import App, { Container } from 'next/app'
+import Router from 'next/router'
 import Head from 'next/head'
 import { init as initApm } from 'elastic-apm-js-base'
 import { globalStyle, createGlobalStyle } from '@smooth-ui/core-sc'
+import { getUser } from '../services/user'
 
 const GlobalStyle = createGlobalStyle`${globalStyle()}`
 
@@ -18,7 +20,7 @@ export default class MyDataCV extends App {
     return { pageProps }
   }
 
-  componentDidMount () {
+  async componentDidMount () {
     const apm = initApm({
 
       // Set required service name (allowed characters: a-z, A-Z, 0-9, -, _, and space)
@@ -31,6 +33,14 @@ export default class MyDataCV extends App {
       serviceVersion: ''
     })
     apm.setInitialPageLoadName(window.location.href)
+
+    const user = await getUser()
+
+    if (!user && Router.pathname !== '/') {
+      Router.push({
+        pathname: '/connect'
+      })
+    }
   }
 
   render () {

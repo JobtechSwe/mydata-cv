@@ -7,7 +7,7 @@ const wait = (ms) => new Promise(resolve => setTimeout(() => resolve(), ms))
 export async function requestConsent (accountId) {
   const consentRequest = {
     account_id: accountId,
-    client_id: 'changeMe',
+    client_id: 'cv',
     scope: [
       'career'
     ],
