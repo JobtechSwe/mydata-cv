@@ -1,9 +1,8 @@
+import axios from 'axios'
+import getConfig from 'next/config'
+const { publicRuntimeConfig: { operatorUrl } } = getConfig()
 
-export async function setUser (user) {
-  await sessionStorage.setItem('mydatacv/user', JSON.stringify(user))
-}
-
-export async function getUser () {
-  const result = await sessionStorage.getItem('mydatacv/user')
-  return JSON.parse(result)
+export async function getUserData (accountId) {
+  const response = await axios.get(`${operatorUrl}/accounts/${encodeURIComponent(accountId)}/data`)
+  return response.data.data
 }

@@ -1,55 +1,25 @@
 import React from 'react'
 import { Box, Typography } from '@smooth-ui/core-sc'
-
-const data = {
-  baseData: {
-    firstName: 'Anna',
-    lastName: 'Andersson'
-  },
-  careerData: {
-    headline: 'UX at SuperCompany',
-    experience: [
-      {
-        employer: 'SuperCompany',
-        title: 'UX',
-        fromDate: '2014',
-        toDate: '2018',
-        description: `At SuperCompany I'm doing user research, prototyping, wireframes etc. Working in a cross-functional team.`
-      },
-      {
-        employer: 'MyStartup',
-        title: 'Co-founder & CMO',
-        fromDate: '2010',
-        toDate: '2013',
-        description: `Business modelling, raising capital, prototyping, marketing, project leader, B2B-sales, PR activities, public speaking, product/market development, user testing, etc.`
-      }
-    ],
-    education: [
-      {
-        schoolName: 'Uppsala University',
-        fieldOfStudy: 'Engineering',
-        degree: 'Master'
-      },
-      {
-        schoolName: 'Hyper Island',
-        fieldOfStudy: 'UX'
-      }
-    ],
-    languages: [
-      {
-        languageName: 'Swedish',
-        proficiency: 'Pretty good'
-      },
-      {
-        languageName: 'English',
-        proficiency: 'Not bad'
-      }
-    ]
-  }
-}
+import { getUserData } from '../services/user'
 
 export default class ProfilePage extends React.Component {
+  state = {}
+
+  async componentDidMount () {
+    const data = await getUserData('anna123')
+    this.setState({ data })
+  }
+
   render () {
+    if (!this.state.data) {
+      return <Box
+        ml="auto"
+        mr="auto"
+        maxWidth={960}
+      >
+        Fetching data
+      </Box>
+    }
     return <Box
       ml="auto"
       mr="auto"
@@ -64,9 +34,9 @@ export default class ProfilePage extends React.Component {
         <Box width={200} height={200} backgroundColor="secondary">
         </Box>
         <Typography variant="h3" mt={20}>
-          {data.baseData.firstName} {data.baseData.lastName}
+          {this.state.data.baseData.firstName} {this.state.data.baseData.lastName}
         </Typography>
-        <p>{data.careerData.headline}</p>
+        <p>{this.state.data.careerData.headline}</p>
       </Box>
       <Box>
         <Box
@@ -77,7 +47,7 @@ export default class ProfilePage extends React.Component {
           <Typography variant="h5" color="secondary">
             Experience
           </Typography>
-          {data.careerData.experience.map((exp, i) => (
+          {this.state.data.careerData.experience.map((exp, i) => (
             <Box mt={5} key={i}>
               <Typography variant="h6">
                 {exp.title}
@@ -95,7 +65,7 @@ export default class ProfilePage extends React.Component {
           <Typography variant="h5" color="secondary">
             Education
           </Typography>
-          {data.careerData.education.map((edu, i) => (
+          {this.state.data.careerData.education.map((edu, i) => (
             <Box mt={5} key={i}>
               <Typography variant="h6">
                 {edu.schoolName}
@@ -112,7 +82,7 @@ export default class ProfilePage extends React.Component {
           <Typography variant="h5" color="secondary">
             Languages
           </Typography>
-          {data.careerData.languages.map((lang, i) => (
+          {this.state.data.careerData.languages.map((lang, i) => (
             <Box mt={5} key={i}>
               <Typography variant="h6">
                 {lang.languageName}
