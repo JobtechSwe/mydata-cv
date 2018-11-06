@@ -6,7 +6,9 @@ export default ({ title, children }) => (<Box borderTop={1} borderColor="primary
     <Typography variant="h5" color="secondary">
       {title}
     </Typography>
-    <Button variant="light" mb={1} ml={2}>+</Button>
+    <Box>
+      <Button variant="light" mb={1} ml={2} disabled>+</Button>
+    </Box>
   </Box>
   {children}
 </Box>)

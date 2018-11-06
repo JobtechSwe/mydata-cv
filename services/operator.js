@@ -32,7 +32,21 @@ export async function getConsent (link) {
   return getConsent(link)
 }
 
-export async function getUserData (accountId) {
-  const response = await axios.get(`${operatorUrl}/accounts/${encodeURIComponent(accountId)}/data`)
-  return response.data.data
+export async function getUserData (accountId, area) {
+  if (!area) {
+    const response = await axios.get(`${operatorUrl}/accounts/${encodeURIComponent(accountId)}/data`)
+    return response.data.data
+  } else {
+    const response = await axios.get(`${operatorUrl}/accounts/${encodeURIComponent(accountId)}/data/${area}`)
+    return response.data.data
+  }
+}
+
+export async function putUserData (accountId, area, data) {
+  const url = `${operatorUrl}/accounts/${encodeURIComponent(accountId)}/data/${area}`
+  try {
+    await axios.put(url, data)
+  } catch (err) {
+    throw err
+  }
 }
