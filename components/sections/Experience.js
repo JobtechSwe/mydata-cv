@@ -2,30 +2,22 @@ import React, { useState, useContext } from 'react'
 import Section from './Section'
 import ExperienceDraft from './ExperienceDraft'
 import { Box, Typography, Modal, Button } from '@smooth-ui/core-sc'
-import { putUserData } from '../../services/operator'
-import { UserContext } from '../UserContext'
+import { StoreContext } from '../../services/StoreContext'
 
-export default ({ experienceInit }) => {
-  const [editId, setEditId] = useState(undefined)
+export default () => {
+  const [{ data: { experience } }, { updateExperienceEntry }] = useContext(StoreContext)
+
+  // Local state
+  const [draftId, setDraftId] = useState(undefined)
   const [modalOpen, setModal] = useState(false)
-  const [experience, setExperience] = useState(experienceInit)
-  const { accountId } = useContext(UserContext)
 
   const onSave = async (entry) => {
+    await updateExperienceEntry(entry)
     setModal(false)
-    const data = experience.map(x => {
-      if (x.id === entry.id) {
-        return Object.assign({}, x, entry)
-      }
-      return x
-    })
-
-    await putUserData(accountId, 'experience', data)
-    setExperience(data)
   }
 
   const openModal = (id) => {
-    setEditId(id)
+    setDraftId(id)
     setModal(true)
   }
 
@@ -42,7 +34,7 @@ export default ({ experienceInit }) => {
         </Box>
       ))}
       <Modal opened={modalOpen} onClose={() => setModal(false)}>
-        <ExperienceDraft experienceEntry={experience.filter(x => editId === x.id)[0]} onClose={() => setModal(false)} onSave={onSave} />
+        <ExperienceDraft experienceEntry={experience.filter(x => draftId === x.id)[0]} onClose={() => setModal(false)} onSave={onSave} />
       </Modal>
     </Section>
   )

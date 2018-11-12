@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { requestConsent } from '../services/operator'
 import styled from 'styled-components'
 import { Button, FormGroup, Label, Input, ControlFeedback, Typography } from '@smooth-ui/core-sc'
-import { storeId } from '../services/storage'
+import { setId } from '../services/storage'
 
 const Form = styled.form`
   width: 100%;
@@ -24,7 +24,7 @@ export default class ConnectForm extends Component {
     } else {
       try {
         const { data, links } = await requestConsent(this.state.value)
-        storeId(this.state.value)
+        setId(this.state.value)
         this.props.onConsentRequest({ data, links })
       } catch (error) {
         this.setState({

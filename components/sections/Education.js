@@ -1,31 +1,23 @@
 import React, { useState, useContext } from 'react'
-import { UserContext } from '../UserContext'
 import Section from './Section'
 import EducationDraft from './EducationDraft'
 import { Box, Typography, Modal, Button } from '@smooth-ui/core-sc'
-import { putUserData } from '../../services/operator'
+import { StoreContext } from '../../services/StoreContext'
 
-export default ({ educationInit }) => {
-  const [editId, setEditId] = useState(undefined)
+export default () => {
+  const [{ data: { education } }, { updateEducationEntry }] = useContext(StoreContext)
+
+  // Local state
+  const [draftId, setDraftId] = useState(undefined)
   const [modalOpen, setModal] = useState(false)
-  const [education, setEducation] = useState(educationInit)
-  const { accountId } = useContext(UserContext)
 
   const onSave = async (entry) => {
+    await updateEducationEntry(entry)
     setModal(false)
-    const data = education.map(x => {
-      if (x.id === entry.id) {
-        return Object.assign({}, x, entry)
-      }
-      return x
-    })
-
-    await putUserData(accountId, 'education', data)
-    setEducation(data)
   }
 
   const openModal = (id) => {
-    setEditId(id)
+    setDraftId(id)
     setModal(true)
   }
 
@@ -41,7 +33,7 @@ export default ({ educationInit }) => {
         </Box>
       ))}
       <Modal opened={modalOpen} onClose={() => setModal(false)}>
-        <EducationDraft educationEntry={education.filter(x => editId === x.id)[0]} onClose={() => setModal(false)} onSave={onSave} />
+        <EducationDraft educationEntry={education.filter(x => draftId === x.id)[0]} onClose={() => setModal(false)} onSave={onSave} />
       </Modal>
     </Section>
   )

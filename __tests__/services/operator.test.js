@@ -3,7 +3,27 @@ import axios from 'axios'
 jest.mock('axios')
 
 describe('operator', () => {
+  afterEach(() => {
+    operator.clear()
+  })
+
+  describe('#login', () => {
+    it('redirects to operator login page with oauth query', () => {
+      window.location.assign = jest.fn()
+
+      operator.init({ operatorUrl: '111111', redirectUri: '222222', clientId: 'bestclientever' })
+      operator.login()
+
+      expect(window.location.assign)
+        .toHaveBeenCalledWith('111111/login?redirect_uri=222222&client_id=bestclientever')
+    })
+  })
+
   describe('#requestConsent', () => {
+    beforeEach(() => {
+      operator.init({ operatorUrl: 'aTotallyLegitOperatorUrl' })
+    })
+
     it('posts to operator', async () => {
       const response = {
         status: '201',
@@ -16,7 +36,7 @@ describe('operator', () => {
       await operator.requestConsent('my-fantastic-account-id')
 
       expect(axios.post)
-        .toHaveBeenCalledWith('aTotallyLegitOperatorUrl/consents',
+        .toHaveBeenCalledWith('aTotallyLegitOperatorUrl/api/consents',
           { account_id: 'my-fantastic-account-id',
             client_id: 'cv',
             scope: [
@@ -44,6 +64,10 @@ describe('operator', () => {
   })
 
   describe('#getConsent', () => {
+    beforeEach(() => {
+      operator.init({ operatorUrl: 'aTotallyLegitOperatorUrl' })
+    })
+
     it('does get request to operator using the link provided', async () => {
       const response = {
         status: '201',

@@ -3,21 +3,13 @@ import App, { Container } from 'next/app'
 import Head from 'next/head'
 import { init as initApm } from 'elastic-apm-js-base'
 import { globalStyle, createGlobalStyle } from '@smooth-ui/core-sc'
+import { StoreProvider } from '../services/StoreContext'
+import { isInitialized, init } from '../services/operator'
+import getConfig from 'next/config'
 
 const GlobalStyle = createGlobalStyle`${globalStyle()}`
 
 export default class MyDataCV extends App {
-  static async getInitialProps ({ Component, router, ctx }) {
-    let pageProps = {}
-
-    // TODO: Is this right?
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx)
-    }
-
-    return { pageProps }
-  }
-
   async componentDidMount () {
     const apm = initApm({
 
@@ -31,6 +23,16 @@ export default class MyDataCV extends App {
       serviceVersion: ''
     })
     apm.setInitialPageLoadName(window.location.href)
+
+    if (!isInitialized()) {
+      console.log('Initializing MyData-Operator')
+      const { publicRuntimeConfig: { operatorUrl, redirectUri, clientId } } = getConfig()
+      init({
+        clientId,
+        operatorUrl,
+        redirectUri
+      })
+    }
   }
 
   render () {
@@ -43,7 +45,9 @@ export default class MyDataCV extends App {
           <title>CV</title>
         </Head>
         <Container>
-          <Component {...pageProps} />
+          <StoreProvider>
+            <Component {...pageProps} />
+          </StoreProvider>
         </Container>
       </React.Fragment>
     )

@@ -1,4 +1,4 @@
-function getEnvVars (env) {
+function getOperatorUrl (env) {
   if (env === 'production') {
     return 'https://operator.mydata.work'
   } else if (env === 'test') {
@@ -8,8 +8,20 @@ function getEnvVars (env) {
   }
 }
 
+function getRedirectUri (env) {
+  if (env === 'production') {
+    return 'https://cv.work/return'
+  } else if (env === 'test') {
+    return 'https://test.cv.work/return'
+  } else {
+    return 'http://localhost:4000/return'
+  }
+}
+
 module.exports = {
   publicRuntimeConfig: {
-    operatorUrl: getEnvVars(process.env.NODE_ENV)
+    operatorUrl: getOperatorUrl(process.env.NODE_ENV),
+    redirectUri: getRedirectUri(process.env.NODE_ENV),
+    clientId: 'foooooo'
   }
 }
