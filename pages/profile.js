@@ -6,6 +6,7 @@ import Education from '../components/sections/Education'
 import Languages from '../components/sections/Languages'
 import { StoreContext } from '../services/StoreContext'
 import { RingLoader } from 'react-spinners'
+import { Transition } from 'react-spring'
 
 export default () => {
   const [,,, loaded] = useContext(StoreContext)
@@ -23,13 +24,22 @@ export default () => {
   }
 
   return (
-    <Box ml="auto" mr="auto" maxWidth={960}>
-      <Header />
-      <Box>
-        <Experience />
-        <Education />
-        <Languages />
-      </Box>
-    </Box>
+    <Transition
+      items={[loaded]}
+      from={{ opacity: 0 }}
+      enter={{ opacity: 1 }}
+      leave={{ opacity: 0 }}
+    >
+      { () => props =>
+        <Box ml="auto" mr="auto" maxWidth={960} style={props}>
+          <Header />
+          <Box>
+            <Experience />
+            <Education />
+            <Languages />
+          </Box>
+        </Box>
+      }
+    </Transition>
   )
 }

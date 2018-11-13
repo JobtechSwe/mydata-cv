@@ -35,6 +35,7 @@
     "react": "next",
     "react-dom": "next",
     "react-spinners": "^0.4.7",
+    "react-spring": "^6.1.8",
     "styled-components": "^4.0.2"
   },
   "devDependencies": {

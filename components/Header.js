@@ -52,7 +52,7 @@ export default () => {
         { baseData
           ? draft
             ? <Input value={draft.headline} onChange={changeHandler} name="headline" placeholder="Your headline here" onKeyPress={handleKeyPress} />
-            : baseData.headline || 'Your headline here'
+            : `"${baseData.headline}"` || 'Your headline here'
           : 'Your headline here'
         }
       </Box>
