@@ -36,6 +36,10 @@ const reducer = (state, action) => {
       return { ...state,
         education: state.education.map((x, i) => action.payload.index !== i ? x : Object.assign({}, x, action.payload.entry))
       }
+    case 'update baseData':
+      return { ...state,
+        baseData: action.payload
+      }
     case 'init':
       return action.payload
     default:
@@ -67,6 +71,7 @@ const StoreProvider = ({ ...props }) => {
     const retrievedData = await read('/', token)
     dispatch({ type: 'init', payload: retrievedData })
     setLoaded(true)
+    console.log('has loaded data', retrievedData)
   }, [token])
 
   useEffect(async () => {
@@ -87,7 +92,13 @@ const StoreProvider = ({ ...props }) => {
     }
   }, [data.experience])
 
-  return <StoreContext.Provider value={[data, dispatch, afterLogin]}>{props.children}</StoreContext.Provider>
+  useEffect(async () => {
+    if (loaded) {
+      await write('/baseData', data.baseData, token)
+    }
+  }, [data.baseData])
+
+  return <StoreContext.Provider value={[data, dispatch, afterLogin, loaded]}>{props.children}</StoreContext.Provider>
 }
 
 export {

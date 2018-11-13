@@ -34,6 +34,7 @@
     "next": "^7.0.1",
     "react": "next",
     "react-dom": "next",
+    "react-spinners": "^0.4.7",
     "styled-components": "^4.0.2"
   },
   "devDependencies": {

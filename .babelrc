@@ -5,7 +5,8 @@
         "next/babel"
       ],
       "plugins": [
-        "babel-plugin-styled-components"
+        "babel-plugin-styled-components",
+        "emotion"
       ]
     },
     "production": {
@@ -13,7 +14,8 @@
         "next/babel"
       ],
       "plugins": [
-        "babel-plugin-styled-components"
+        "babel-plugin-styled-components",
+        "emotion"
       ]
     },
     "test": {
@@ -28,7 +30,8 @@
         ]
       ],
       "plugins": [
-        "babel-plugin-styled-components"
+        "babel-plugin-styled-components",
+        "emotion"
       ]
     }
   }
