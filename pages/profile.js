@@ -11,7 +11,6 @@ export default () => {
   const [,,, loaded] = useContext(StoreContext)
 
   if (!loaded) {
-    console.log(theme.black)
     return (
       <Box ml="auto" mr="auto" maxWidth={960} height="100vh" display="flex" justifyContent="center" alignItems="center">
         <RingLoader

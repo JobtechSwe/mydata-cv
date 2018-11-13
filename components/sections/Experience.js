@@ -33,7 +33,7 @@ export default () => {
             {exp.title}
             <Button onClick={() => openModal(i)} variant="light" ml={2} size="sm">Edit</Button>
           </Typography>
-          <p>{exp.employer}, {exp.fromDate}-{exp.toDate}</p>
+          <p>{exp.employer}, {exp.fromDate.substring(0, 4)} - {exp.toDate.substring(0, 4)}</p>
           <p>{exp.description}</p>
         </Box>
       ))}
