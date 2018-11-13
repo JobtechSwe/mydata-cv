@@ -5,36 +5,40 @@ import { Box, Typography, Modal, Button } from '@smooth-ui/core-sc'
 import { StoreContext } from '../../services/StoreContext'
 
 export default () => {
-  const [{ data: { experience } }, { updateExperienceEntry }] = useContext(StoreContext)
+  const [{ experience }, dispatch] = useContext(StoreContext)
 
   // Local state
-  const [draftId, setDraftId] = useState(undefined)
+  const [draftIndex, setDraftIndex] = useState(undefined)
   const [modalOpen, setModal] = useState(false)
 
   const onSave = async (entry) => {
-    await updateExperienceEntry(entry)
+    typeof draftIndex === 'undefined'
+      ? await dispatch({ type: 'add experience', payload: { entry } })
+      : await dispatch({ type: 'update experience', payload: { entry, index: draftIndex } })
     setModal(false)
   }
 
-  const openModal = (id) => {
-    setDraftId(id)
+  const openModal = (i) => {
+    setDraftIndex(i)
     setModal(true)
   }
 
+  const getDraft = (i) => typeof i !== 'undefined' ? experience[i] : {}
+
   return (
-    <Section title="Experience">
-      {experience.map((exp) => (
-        <Box mt={5} key={exp.id}>
+    <Section title="Experience" createHandler={() => openModal()}>
+      {experience && experience.map((exp, i) => (
+        <Box mt={5} key={i}>
           <Typography variant="h6">
             {exp.title}
-            <Button onClick={() => openModal(exp.id)} variant="light" ml={2} size="sm">Edit</Button>
+            <Button onClick={() => openModal(i)} variant="light" ml={2} size="sm">Edit</Button>
           </Typography>
           <p>{exp.employer}, {exp.fromDate}-{exp.toDate}</p>
           <p>{exp.description}</p>
         </Box>
       ))}
       <Modal opened={modalOpen} onClose={() => setModal(false)}>
-        <ExperienceDraft experienceEntry={experience.filter(x => draftId === x.id)[0]} onClose={() => setModal(false)} onSave={onSave} />
+        <ExperienceDraft experienceEntry={getDraft(draftIndex)} onClose={() => setModal(false)} onSave={onSave} />
       </Modal>
     </Section>
   )

@@ -1,85 +1,93 @@
-import React, { createContext, useState, useEffect } from 'react'
-import { getId, getAccessToken, setId, setAccessToken } from './storage'
+import React, { createContext, useState, useEffect, useReducer } from 'react'
 import { write, read } from './operator'
+import * as storage from './storage'
 
 const StoreContext = createContext({})
 
-const actions = {
-  updateTokenAndAccountId: (token, accountId) => (old) => ({
-    ...old,
-    token,
-    accountId
-  })
-}
-
-const isBrowser = () => typeof window !== 'undefined'
-
-const initialState = {
-  accountId: isBrowser() ? getId() : undefined,
-  token: isBrowser() ? getAccessToken() : undefined,
-  data: null
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'add experience':
+      return { ...state,
+        experience: state.experience
+          ? state.experience.concat(action.payload.entry)
+          : [action.payload.entry]
+      }
+    case 'update experience':
+      return { ...state,
+        experience: state.experience.map((x, i) => action.payload.index !== i ? x : Object.assign({}, x, action.payload.entry))
+      }
+    case 'add language':
+      return { ...state,
+        languages: state.languages
+          ? state.languages.concat(action.payload.entry)
+          : [action.payload.entry]
+      }
+    case 'update language':
+      return { ...state,
+        languages: state.languages.map((x, i) => action.payload.index !== i ? x : Object.assign({}, x, action.payload.entry))
+      }
+    case 'add education':
+      return { ...state,
+        education: state.education
+          ? state.education.concat(action.payload.entry)
+          : [action.payload.entry]
+      }
+    case 'update education':
+      return { ...state,
+        education: state.education.map((x, i) => action.payload.index !== i ? x : Object.assign({}, x, action.payload.entry))
+      }
+    case 'init':
+      return action.payload
+    default:
+      throw Error('Action type has to be specified')
+  }
 }
 
 const StoreProvider = ({ ...props }) => {
-  const [{ accountId, token, data }, setState] = useState(initialState)
+  const [data, dispatch] = useReducer(reducer, {})
+  const [loaded, setLoaded] = useState(false)
+  const [token, setToken] = useState(undefined)
 
-  useEffect(async () => {
-    if (accountId) {
-      console.log('loading data')
-      const retrievedData = await read('/')
-      setState(old => ({
-        ...old,
-        data: retrievedData
-      }))
-    }
-  }, [accountId])
-
-  const stateActions = {
-    updateTokenAndAccountId: (token, id) => {
-      console.log('updating token and account id...')
-      setAccessToken(token)
-      setId(id)
-      return setState(actions.updateTokenAndAccountId(token, id))
-    },
-    updateEducationEntry: async (entry) => {
-      const newEducation = data.education.map(x =>
-        x.id === entry.id
-          ? Object.assign({}, x, entry)
-          : x)
-
-      await write('/education', newEducation)
-      setState(old => ({
-        ...old,
-        data: { ...old.data, education: newEducation }
-      }))
-    },
-    updateExperienceEntry: async (entry) => {
-      const newExperience = data.experience.map(x =>
-        x.id === entry.id
-          ? Object.assign({}, x, entry)
-          : x)
-
-      await write('/experience', newExperience)
-      setState(old => ({
-        ...old,
-        data: { ...old.data, experience: newExperience }
-      }))
-    },
-    updateLanguageEntry: async (entry) => {
-      const newLanguages = data.languages.map(x =>
-        x.id === entry.id
-          ? Object.assign({}, x, entry)
-          : x)
-
-      await write('/languages', newLanguages)
-      setState(old => ({
-        ...old,
-        data: { ...old.data, languages: newLanguages }
-      }))
-    }
+  const afterLogin = (thing) => {
+    storage.setAccessToken(thing)
+    setToken(thing)
   }
 
-  return <StoreContext.Provider value={[{ accountId, token, data }, stateActions]}>{props.children}</StoreContext.Provider>
+  useEffect(() => {
+    const tokenFromStorage = storage.getAccessToken()
+    if (tokenFromStorage) {
+      setToken(storage.getAccessToken())
+    }
+  }, [])
+
+  useEffect(async () => {
+    if (!token) {
+      return
+    }
+    const retrievedData = await read('/', token)
+    dispatch({ type: 'init', payload: retrievedData })
+    setLoaded(true)
+  }, [token])
+
+  useEffect(async () => {
+    if (loaded) {
+      await write('/languages', data.languages, token)
+    }
+  }, [data.languages])
+
+  useEffect(async () => {
+    if (loaded) {
+      await write('/education', data.education, token)
+    }
+  }, [data.education])
+
+  useEffect(async () => {
+    if (loaded) {
+      await write('/experience', data.experience, token)
+    }
+  }, [data.experience])
+
+  return <StoreContext.Provider value={[data, dispatch, afterLogin]}>{props.children}</StoreContext.Provider>
 }
 
 export {

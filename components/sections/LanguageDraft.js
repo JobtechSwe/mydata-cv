@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { FormGroup, Label, ModalDialog, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Typography, Input } from '@smooth-ui/core-sc'
 
 export default ({ languageEntry, onSave, onClose }) => {
-  const [language, setLanguage] = useState(languageEntry.languageName)
-  const [proficiency, setProficiency] = useState(languageEntry.proficiency)
+  const [language, setLanguage] = useState(languageEntry.languageName || '')
+  const [proficiency, setProficiency] = useState(languageEntry.proficiency || '')
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
-      onSave({ id: languageEntry.id, languageName: language, proficiency })
+      onSave({ languageName: language, proficiency })
     }
   }
 
@@ -28,7 +28,7 @@ export default ({ languageEntry, onSave, onClose }) => {
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Button variant="primary" onClick={() => onSave({ id: languageEntry.id, languageName: language, proficiency })}>Save changes</Button>
+          <Button variant="primary" onClick={() => onSave({ languageName: language, proficiency })}>Save changes</Button>
           <Button variant="secondary" onClick={onClose}>
             Close
           </Button>

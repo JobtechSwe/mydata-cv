@@ -1,8 +1,7 @@
 import axios from 'axios'
+import jwt from 'jsonwebtoken'
 
 const config = {
-  token: null,
-  accountId: null,
   clientId: null,
   operatorUrl: null,
   redirectUri: null,
@@ -10,6 +9,11 @@ const config = {
 }
 
 const isInitialized = () => config.initialized
+
+const getAccountIdFromToken = (token) => {
+  const { account } = jwt.decode(token)
+  return account.id
+}
 
 const init = ({ clientId, operatorUrl, redirectUri }) => {
   if (config.initialized) {
@@ -58,15 +62,38 @@ const getConsent = async (link) => {
   return getConsent(link)
 }
 
-const read = async (path) => {
-  const response = await axios.get(`${config.operatorUrl}/api/accounts/${encodeURIComponent(config.accountId)}/data${path}`)
+const read = async (path, token) => {
+  if (!config.initialized) {
+    throw Error('operator is not initialized')
+  }
+  if (!token) {
+    console.error('config', config)
+    throw Error('token is not set')
+  }
+  const accountId = getAccountIdFromToken(token)
+
+  console.log(`attempting to read data for accountId ${accountId}`)
+  const response = await axios.get(
+    `${config.operatorUrl}/api/accounts/${encodeURIComponent(accountId)}/data${path}`,
+    { headers: { 'Authorization': `Bearer ${token}` } }
+  )
   return response.data.data
 }
 
-const write = async (path, data) => {
-  const url = `${config.operatorUrl}/api/accounts/${encodeURIComponent(config.accountId)}/data${path}`
+const write = async (path, data, token) => {
+  if (!config.initialized) {
+    throw Error('operator is not initialized')
+  }
+  if (!token) {
+    console.error('config', config)
+    throw Error('token is not set')
+  }
+  console.log('writing data', data)
+  const accountId = getAccountIdFromToken(token)
+  const url = `${config.operatorUrl}/api/accounts/${encodeURIComponent(accountId)}/data${path}`
   try {
-    await axios.put(url, data)
+    await axios.put(url, data,
+      { headers: { 'Authorization': `Bearer ${token}` } })
   } catch (err) {
     throw err
   }
@@ -82,14 +109,8 @@ const login = () => {
   */
 }
 
-const finishLogin = ({ accountId, token }) => {
-  config.accountId = accountId
-  config.token = token
-}
-
 export {
   login,
-  finishLogin,
   write,
   read,
   getConsent,

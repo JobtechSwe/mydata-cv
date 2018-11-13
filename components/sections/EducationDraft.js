@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import { FormGroup, Label, ModalDialog, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Typography, Input } from '@smooth-ui/core-sc'
 
 export default ({ educationEntry, onSave, onClose }) => {
-  const [schoolName, setSchoolName] = useState(educationEntry.schoolName)
-  const [fieldOfStudy, setFieldOfStudy] = useState(educationEntry.fieldOfStudy)
-  const [degree, setDegree] = useState(educationEntry.degree)
+  const [schoolName, setSchoolName] = useState(educationEntry.schoolName || '')
+  const [fieldOfStudy, setFieldOfStudy] = useState(educationEntry.fieldOfStudy || '')
+  const [degree, setDegree] = useState(educationEntry.degree || '')
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
-      onSave({ id: educationEntry.id, schoolName, fieldOfStudy, degree })
+      onSave({ schoolName, fieldOfStudy, degree })
     }
   }
 
@@ -31,7 +31,7 @@ export default ({ educationEntry, onSave, onClose }) => {
           </FormGroup>
         </ModalBody>
         <ModalFooter>
-          <Button variant="primary" onClick={() => onSave({ id: educationEntry.id, schoolName, fieldOfStudy, degree })}>Save changes</Button>
+          <Button variant="primary" onClick={() => onSave({ schoolName, fieldOfStudy, degree })}>Save changes</Button>
           <Button variant="secondary" onClick={onClose}>
             Close
           </Button>

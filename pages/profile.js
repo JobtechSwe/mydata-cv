@@ -7,10 +7,7 @@ import Languages from '../components/sections/Languages'
 import { StoreContext } from '../services/StoreContext'
 
 export default () => {
-  const [{ data, accountId }] = useContext(StoreContext)
-
-  console.log('data is', data)
-  console.log('accountId is', accountId)
+  const [data] = useContext(StoreContext)
 
   if (!data) {
     return <Box ml="auto" mr="auto" maxWidth={960}>Fetching data</Box>

@@ -1,11 +1,13 @@
 import React from 'react'
 import App, { Container } from 'next/app'
 import Head from 'next/head'
+import Router from 'next/router'
 import { init as initApm } from 'elastic-apm-js-base'
 import { globalStyle, createGlobalStyle } from '@smooth-ui/core-sc'
 import { StoreProvider } from '../services/StoreContext'
 import { isInitialized, init } from '../services/operator'
 import getConfig from 'next/config'
+import { getAccessToken } from '../services/storage'
 
 const GlobalStyle = createGlobalStyle`${globalStyle()}`
 
@@ -32,6 +34,23 @@ export default class MyDataCV extends App {
         operatorUrl,
         redirectUri
       })
+    }
+
+    const token = getAccessToken()
+    if (token) {
+      console.log('found token in storage')
+      if (Router.pathname === '/') {
+        Router.push({
+          pathname: '/profile'
+        })
+      }
+    } else {
+      console.log('found no token in storage')
+      if (Router.pathname === '/profile') {
+        Router.push({
+          pathname: '/'
+        })
+      }
     }
   }
 

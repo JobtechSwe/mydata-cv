@@ -5,35 +5,39 @@ import { Box, Typography, Modal, Button } from '@smooth-ui/core-sc'
 import { StoreContext } from '../../services/StoreContext'
 
 export default () => {
-  const [{ data: { education } }, { updateEducationEntry }] = useContext(StoreContext)
+  const [{ education }, dispatch] = useContext(StoreContext)
 
   // Local state
-  const [draftId, setDraftId] = useState(undefined)
+  const [draftIndex, setDraftIndex] = useState(undefined)
   const [modalOpen, setModal] = useState(false)
 
   const onSave = async (entry) => {
-    await updateEducationEntry(entry)
+    typeof draftIndex === 'undefined'
+      ? await dispatch({ type: 'add education', payload: { entry } })
+      : await dispatch({ type: 'update education', payload: { entry, index: draftIndex } })
     setModal(false)
   }
 
   const openModal = (id) => {
-    setDraftId(id)
+    setDraftIndex(id)
     setModal(true)
   }
 
+  const getDraft = (i) => typeof i !== 'undefined' ? education[i] : {}
+
   return (
-    <Section title="Education">
-      {education.map((edu) => (
-        <Box mt={5} key={edu.id}>
+    <Section title="Education" createHandler={() => openModal()}>
+      {education && education.map((edu, i) => (
+        <Box mt={5} key={i}>
           <Typography variant="h6">
             {edu && edu.schoolName}
-            <Button onClick={() => openModal(edu.id)} variant="light" ml={2} size="sm">Edit</Button>
+            <Button onClick={() => openModal(i)} variant="light" ml={2} size="sm">Edit</Button>
           </Typography>
           <p>{edu && edu.fieldOfStudy}</p>
         </Box>
       ))}
       <Modal opened={modalOpen} onClose={() => setModal(false)}>
-        <EducationDraft educationEntry={education.filter(x => draftId === x.id)[0]} onClose={() => setModal(false)} onSave={onSave} />
+        <EducationDraft educationEntry={getDraft(draftIndex)} onClose={() => setModal(false)} onSave={onSave} />
       </Modal>
     </Section>
   )

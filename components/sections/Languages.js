@@ -5,35 +5,39 @@ import { Box, Typography, Modal, Button } from '@smooth-ui/core-sc'
 import { StoreContext } from '../../services/StoreContext'
 
 export default () => {
-  const [{ data: { languages } }, { updateLanguageEntry }] = useContext(StoreContext)
+  const [{ languages }, dispatch] = useContext(StoreContext)
 
   // Local state
-  const [draftId, setDraftId] = useState(undefined)
+  const [draftIndex, setDraftIndex] = useState(undefined)
   const [modalOpen, setModal] = useState(false)
 
   const onSave = async (entry) => {
-    await updateLanguageEntry(entry)
+    typeof draftIndex === 'undefined'
+      ? await dispatch({ type: 'add language', payload: { entry } })
+      : await dispatch({ type: 'update language', payload: { entry, index: draftIndex } })
     setModal(false)
   }
 
-  const openModal = (id) => {
-    setDraftId(id)
+  const openModal = (i) => {
+    setDraftIndex(i)
     setModal(true)
   }
 
+  const getDraft = (i) => typeof i !== 'undefined' ? languages[i] : {}
+
   return (
-    <Section title="Languages">
-      {languages.map((lang) => (
-        <Box mt={5} key={lang.id}>
+    <Section title="Languages" createHandler={() => openModal()}>
+      {languages && languages.map((lang, i) => (
+        <Box mt={5} key={i}>
           <Typography variant="h6">
             {lang.languageName}
-            <Button onClick={() => openModal(lang.id)} variant="light" ml={2} size="sm">Edit</Button>
+            <Button onClick={() => openModal(i)} variant="light" ml={2} size="sm">Edit</Button>
           </Typography>
           <p>{lang.proficiency}</p>
         </Box>
       ))}
       <Modal opened={modalOpen} onClose={() => setModal(false)}>
-        <LanguageDraft languageEntry={languages.filter(x => draftId === x.id)[0]} onClose={() => setModal(false)} onSave={onSave} />
+        <LanguageDraft languageEntry={getDraft(draftIndex)} onClose={() => setModal(false)} onSave={onSave} />
       </Modal>
     </Section>
   )
