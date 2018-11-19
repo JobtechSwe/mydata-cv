@@ -13,7 +13,7 @@ const GlobalStyle = createGlobalStyle`${globalStyle()}`
 
 export default class MyDataCV extends App {
   async componentDidMount () {
-    const apm = initApm({
+/*     const apm = initApm({
 
       // Set required service name (allowed characters: a-z, A-Z, 0-9, -, _, and space)
       serviceName: 'mydata-cv',
@@ -24,7 +24,7 @@ export default class MyDataCV extends App {
       // Set service version (required for sourcemap feature)
       serviceVersion: ''
     })
-    apm.setInitialPageLoadName(window.location.href)
+    apm.setInitialPageLoadName(window.location.href) */
 
     if (!isInitialized()) {
       console.log('Initializing MyData-Operator')
