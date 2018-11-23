@@ -1,12 +1,16 @@
-FROM node:11
+FROM node:alpine
 
+# Create app dir
 WORKDIR /app
 
+# Install app dependencies
 COPY package.json /app
 COPY package-lock.json /app
-RUN npm install --production
+RUN npm ci
 
-COPY /migrations /app/migrations
-COPY /lib /app/lib
+# Bundle app source
+COPY . /app
 
-CMD NODE_ENV=production npm start
+RUN npm run build
+
+CMD [ "npm", "start" ]

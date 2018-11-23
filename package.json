@@ -4,7 +4,7 @@
   "description": "A Data Source/Data Sink offering a searchable CV",
   "main": "server.js",
   "scripts": {
-    "start": "next start",
+    "start": "node .",
     "build": "next build",
     "dev": "nodemon",
     "test": "NODE_ENV=test jest --watchAll",
