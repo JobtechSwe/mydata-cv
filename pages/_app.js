@@ -5,15 +5,13 @@ import Router from 'next/router'
 import { init as initApm } from 'elastic-apm-js-base'
 import { globalStyle, createGlobalStyle } from '@smooth-ui/core-sc'
 import { StoreProvider } from '../services/StoreContext'
-import { isInitialized, init } from '../services/operator'
-import getConfig from 'next/config'
 import { getAccessToken } from '../services/storage'
 
 const GlobalStyle = createGlobalStyle`${globalStyle()}`
 
 export default class MyDataCV extends App {
   async componentDidMount () {
-/*     const apm = initApm({
+    /* const apm = initApm({
 
       // Set required service name (allowed characters: a-z, A-Z, 0-9, -, _, and space)
       serviceName: 'mydata-cv',
@@ -24,17 +22,8 @@ export default class MyDataCV extends App {
       // Set service version (required for sourcemap feature)
       serviceVersion: ''
     })
-    apm.setInitialPageLoadName(window.location.href) */
-
-    if (!isInitialized()) {
-      console.log('Initializing MyData-Operator')
-      const { publicRuntimeConfig: { operatorUrl, redirectUri, clientId } } = getConfig()
-      init({
-        clientId,
-        operatorUrl,
-        redirectUri
-      })
-    }
+    apm.setInitialPageLoadName(window.location.href)
+    */
 
     const token = getAccessToken()
     if (token) {
