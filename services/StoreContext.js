@@ -1,6 +1,10 @@
 import React, { createContext, useState, useEffect, useReducer } from 'react'
-import { write, read } from './operator'
+import { createClient } from '@mydata/client'
+import getConfig from 'next/config'
 import * as storage from './storage'
+
+const { publicRuntimeConfig: { clientId, redirectUri, operatorUrl } } = getConfig()
+const client = createClient({ clientId, redirectUri, operatorUrl })
 
 const StoreContext = createContext({})
 
@@ -64,38 +68,47 @@ const StoreProvider = ({ ...props }) => {
     }
   }, [])
 
-  useEffect(async () => {
-    if (!token) {
-      return
-    }
-    const retrievedData = await read('/', token)
-    dispatch({ type: 'init', payload: retrievedData })
-    setLoaded(true)
-    console.log('has loaded data', retrievedData)
+  useEffect(() => {
+    if (!token) { return }
+
+    (async () => {
+      const retrievedData = await client.read('/', token)
+      dispatch({ type: 'init', payload: retrievedData })
+      setLoaded(true)
+      console.log('has loaded data', retrievedData)
+    })()
   }, [token])
 
-  useEffect(async () => {
-    if (loaded) {
-      await write('/languages', data.languages, token)
-    }
+  useEffect(() => {
+    if (!loaded) { return }
+
+    (async () => {
+      await client.write('/languages', data.languages, token)
+    })()
   }, [data.languages])
 
-  useEffect(async () => {
-    if (loaded) {
-      await write('/education', data.education, token)
-    }
+  useEffect(() => {
+    if (!loaded) { return }
+
+    (async () => {
+      await client.write('/education', data.education, token)
+    })()
   }, [data.education])
 
-  useEffect(async () => {
-    if (loaded) {
-      await write('/experience', data.experience, token)
-    }
+  useEffect(() => {
+    if (!loaded) { return }
+
+    (async () => {
+      await client.write('/experience', data.experience, token)
+    })()
   }, [data.experience])
 
-  useEffect(async () => {
-    if (loaded) {
-      await write('/baseData', data.baseData, token)
-    }
+  useEffect(() => {
+    if (!loaded) { return }
+
+    (async () => {
+      await client.write('/baseData', data.baseData, token)
+    })()
   }, [data.baseData])
 
   return <StoreContext.Provider value={[data, dispatch, afterLogin, loaded]}>{props.children}</StoreContext.Provider>
