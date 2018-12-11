@@ -62,3 +62,6 @@ typings/
 
 # webstorm project dir
 .idea
+
+# Visual Studio Code
+.vscode
