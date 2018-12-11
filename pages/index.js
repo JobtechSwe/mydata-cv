@@ -30,7 +30,7 @@ export default () => {
           <li>Share your CV with whoever you want</li>
           <li>And more</li>
         </ul>
-        <Button variant="success" onClick={() => window.location.assign('/auth')} style={{ marginTop: 10 + 'px' }}>Log in with MyData</Button>
+        <Button variant="success" onClick={() => window.location.assign('/auth')} style={{ marginTop: 10 + 'px' }}>Log in with Mydata</Button>
       </Box>
     </React.Fragment>
   )
