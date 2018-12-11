@@ -1,10 +1,5 @@
 import React, { createContext, useState, useEffect, useReducer } from 'react'
-import { createClient } from '@mydata/client'
-import getConfig from 'next/config'
 import * as storage from './storage'
-
-const { publicRuntimeConfig: { clientId, redirectUri, operatorUrl } } = getConfig()
-const client = createClient({ clientId, redirectUri, operatorUrl })
 
 const StoreContext = createContext({})
 
@@ -72,7 +67,8 @@ const StoreProvider = ({ ...props }) => {
     if (!token) { return }
 
     (async () => {
-      const retrievedData = await client.read('/', token)
+      // const retrievedData = await client.read('/', token)
+      const retrievedData = {}
       dispatch({ type: 'init', payload: retrievedData })
       setLoaded(true)
       console.log('has loaded data', retrievedData)
@@ -83,7 +79,7 @@ const StoreProvider = ({ ...props }) => {
     if (!loaded) { return }
 
     (async () => {
-      await client.write('/languages', data.languages, token)
+      // await client.write('/languages', data.languages, token)
     })()
   }, [data.languages])
 
@@ -91,7 +87,7 @@ const StoreProvider = ({ ...props }) => {
     if (!loaded) { return }
 
     (async () => {
-      await client.write('/education', data.education, token)
+      // await client.write('/education', data.education, token)
     })()
   }, [data.education])
 
@@ -99,7 +95,7 @@ const StoreProvider = ({ ...props }) => {
     if (!loaded) { return }
 
     (async () => {
-      await client.write('/experience', data.experience, token)
+      // await client.write('/experience', data.experience, token)
     })()
   }, [data.experience])
 
@@ -107,7 +103,7 @@ const StoreProvider = ({ ...props }) => {
     if (!loaded) { return }
 
     (async () => {
-      await client.write('/baseData', data.baseData, token)
+      // await client.write('/baseData', data.baseData, token)
     })()
   }, [data.baseData])
 

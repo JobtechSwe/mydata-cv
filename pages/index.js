@@ -1,12 +1,5 @@
 import React from 'react'
 import { Box, Typography, Button, theme, styled } from '@smooth-ui/core-sc'
-import { createClient } from '@mydata/client'
-import getConfig from 'next/config'
-
-const { publicRuntimeConfig: { redirectUri, clientId, operatorUrl } } = getConfig()
-
-const client = createClient({ clientId, redirectUri, operatorUrl })
-const loginUrl = client.getLoginUrl(redirectUri)
 
 const Background = styled.div`
   background-image: url('/static/landing-page.jpg');
@@ -37,7 +30,7 @@ export default () => {
           <li>Share your CV with whoever you want</li>
           <li>And more</li>
         </ul>
-        <Button variant="success" onClick={() => window.location.assign(loginUrl)} style={{ marginTop: 10 + 'px' }}>Log in with MyData</Button>
+        <Button variant="success" onClick={() => window.location.assign('/auth')} style={{ marginTop: 10 + 'px' }}>Log in with MyData</Button>
       </Box>
     </React.Fragment>
   )
