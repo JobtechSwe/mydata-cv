@@ -1,5 +1,6 @@
 const { Router } = require('express')
 const router = Router()
+const { get } = require('../services/consents')
 
 module.exports = operator => {
   router.get('/', (req, res, next) => {
@@ -14,5 +15,13 @@ module.exports = operator => {
     res.send(consentRequest)
   })
 
+  router.get('/approved/:id', async (req, res, next) => {
+    const result = get(req.params.id)
+    if (result) {
+      res.send(result)
+    } else {
+      res.sendStatus(404)
+    }
+  })
   return router
 }

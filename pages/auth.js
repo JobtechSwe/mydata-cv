@@ -2,12 +2,27 @@ import React, { useEffect, useState } from 'react'
 import { Box, Typography } from '@smooth-ui/core-sc'
 import axios from 'axios'
 
+let pollId
+
+const poll = id => setInterval(async () => {
+  try {
+    await axios.get(`/api/approved/${id}`)
+    clearInterval(pollId)
+    window.location.assign('/profile')
+  } catch (error) {
+    console.log(error)
+  }
+}, 2000)
+
 export default () => {
   const [id, setId] = useState(null)
   useEffect(() => {
     axios.post('/api/auth')
       .then(val => val.data.id)
-      .then(id => setId(id))
+      .then(id => {
+        setId(id)
+        pollId = poll(id)
+      })
   }, [])
 
   return (
