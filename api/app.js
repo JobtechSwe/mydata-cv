@@ -21,8 +21,7 @@ const config = {
 }
 const operator = create(config)
 
-// operator.on('consent', consent => console.log) // eg. write to db
-operator.events.consents.on('consent', consent => {
+operator.events.on('CONSENT_APPROVED', consent => {
   set(consent)
 })
 
@@ -32,6 +31,6 @@ app.use('/api', routes(operator))
 
 // Operator routes
 app.get('/jwks', operator.routes.jwks)
-app.post('/consents', operator.routes.consents)
+app.post('/events', operator.routes.events)
 
 module.exports = app
