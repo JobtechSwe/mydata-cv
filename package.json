@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/JobtechSwe/mydata-cv#readme",
   "dependencies": {
-    "@mydata/client": "^0.1.1",
+    "@mydata/client": "^0.1.2",
     "@smooth-ui/core-sc": "^7.0.3",
     "axios": "^0.18.0",
     "elastic-apm-js-base": "^1.0.0",
@@ -33,6 +33,7 @@
     "express": "^4.16.3",
     "jsonwebtoken": "^8.3.0",
     "next": "^7.0.1",
+    "qrcode.react": "^0.8.0",
     "react": "next",
     "react-dom": "next",
     "react-spinners": "^0.4.7",
