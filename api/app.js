@@ -1,6 +1,7 @@
 const { create } = require('@mydata/client')
 const express = require('express')
 const routes = require('./routes')
+const { set } = require('./services/consents')
 
 // TODO: Get from somewhere else
 const config = {
@@ -20,8 +21,17 @@ const config = {
 }
 const operator = create(config)
 
+// operator.on('consent', consent => console.log) // eg. write to db
+operator.events.consents.on('consent', consent => {
+  set(consent)
+})
+
 const app = express()
+app.use(express.json())
 app.use('/api', routes(operator))
-app.get('/jwks', operator.routes.jwks())
+
+// Operator routes
+app.get('/jwks', operator.routes.jwks)
+app.post('/consents', operator.routes.consents)
 
 module.exports = app
