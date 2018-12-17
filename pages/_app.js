@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Router from 'next/router'
 import { init as initApm } from 'elastic-apm-js-base'
 import { globalStyle, createGlobalStyle } from '@smooth-ui/core-sc'
+import Navbar from '../components/Navbar'
 import { StoreProvider } from '../services/StoreContext'
 import { getAccessToken } from '../services/storage'
 
@@ -54,6 +55,7 @@ export default class MyDataCV extends App {
         </Head>
         <Container>
           <StoreProvider>
+            <Navbar />
             <Component {...pageProps} />
           </StoreProvider>
         </Container>

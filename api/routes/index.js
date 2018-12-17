@@ -1,8 +1,18 @@
 const { Router } = require('express')
 const router = Router()
 
-router.get('/', (req, res, next) => {
-  res.send(require(`${process.cwd()}/package.json`))
-})
+module.exports = operator => {
+  router.get('/', (req, res, next) => {
+    res.send(require(`${process.cwd()}/package.json`))
+  })
 
-module.exports = router
+  router.post('/auth', async (req, res, next) => {
+    const consentRequest = await operator.request({
+      client_id: 'asdasd',
+      scope: ['allyourbasearebelongtous']
+    })
+    res.send(consentRequest)
+  })
+
+  return router
+}

@@ -5,7 +5,7 @@ import Experience from '../components/sections/Experience'
 import Education from '../components/sections/Education'
 import Languages from '../components/sections/Languages'
 import { StoreContext } from '../services/StoreContext'
-import { RingLoader } from 'react-spinners'
+import { DotLoader } from 'react-spinners'
 import { Transition } from 'react-spring'
 
 export default () => {
@@ -14,7 +14,7 @@ export default () => {
   if (!loaded) {
     return (
       <Box ml="auto" mr="auto" maxWidth={960} height="100vh" display="flex" justifyContent="center" alignItems="center">
-        <RingLoader
+        <DotLoader
           sizeUnit={'px'}
           size={60}
           color={theme.brick}

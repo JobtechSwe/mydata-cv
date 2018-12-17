@@ -31,7 +31,7 @@ export default () => {
   }
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" mt={40}>
+    <Box display="flex" flexDirection="column" alignItems="center" mt={40} mb={20}>
       <Box width={200} height={200} backgroundColor="light" />
       <Typography variant="h3" mt={20}>
         { baseData

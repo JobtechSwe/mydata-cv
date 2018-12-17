@@ -1,12 +1,12 @@
 {
   "name": "mydata-cv",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A Data Source/Data Sink offering a searchable CV",
   "main": "server.js",
   "scripts": {
     "start": "node .",
     "build": "next build",
-    "dev": "nodemon",
+    "dev": "nodemon --watch ./api --watch ./components --watch ./pages --watch ./services --watch server.js",
     "test": "NODE_ENV=test jest --watchAll",
     "lint": "eslint '**/*.js'"
   },
