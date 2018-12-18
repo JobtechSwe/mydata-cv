@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const router = Router()
-const { get } = require('../services/consents')
+const { getConsent } = require('../services/db')
 
 module.exports = operator => {
   router.get('/', (req, res, next) => {
@@ -16,12 +16,22 @@ module.exports = operator => {
   })
 
   router.get('/approved/:id', async (req, res, next) => {
-    const result = get(req.params.id)
+    const result = getConsent(req.params.id)
     if (result) {
-      res.send(result)
+      res.send({ accessToken: result.id }) // TODO: Use actual accessToken instead of consentId from Operator...?
     } else {
       res.sendStatus(404)
     }
+  })
+
+  router.get('/data', async (req, res, next) => {
+    const consentId = req.headers.authorization.split('Bearer ')[1]
+
+    if (!consentId) {
+      return next(Error('Invalid authorization header'))
+    }
+    const data = await operator.data.read(consentId, '/')
+    res.send(data)
   })
   return router
 }

@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useReducer } from 'react'
 import * as storage from './storage'
+import { read } from './data'
 
 const StoreContext = createContext({})
 
@@ -67,8 +68,7 @@ const StoreProvider = ({ ...props }) => {
     if (!token) { return }
 
     (async () => {
-      // const retrievedData = await client.read('/', token)
-      const retrievedData = {}
+      const retrievedData = await read('/', token)
       dispatch({ type: 'init', payload: retrievedData })
       setLoaded(true)
       console.log('has loaded data', retrievedData)

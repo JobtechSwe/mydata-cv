@@ -1,7 +1,7 @@
 const { create } = require('@mydata/client')
 const express = require('express')
 const routes = require('./routes')
-const { set } = require('./services/consents')
+const { saveConsent } = require('./services/db')
 
 // TODO: Get from somewhere else
 const config = {
@@ -22,7 +22,7 @@ const config = {
 const operator = create(config)
 
 operator.events.on('CONSENT_APPROVED', consent => {
-  set(consent)
+  saveConsent(consent)
 })
 
 const app = express()

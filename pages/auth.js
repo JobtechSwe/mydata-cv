@@ -1,21 +1,25 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Box, Typography } from '@smooth-ui/core-sc'
 import axios from 'axios'
 import QRCode from 'qrcode.react'
+import { StoreContext } from '../services/StoreContext'
 
 let pollId
 
-const poll = id => setInterval(async () => {
-  try {
-    await axios.get(`/api/approved/${id}`)
-    clearInterval(pollId)
-    window.location.assign('/profile')
-  } catch (error) {
-    console.log(error)
-  }
-}, 2000)
-
 export default () => {
+  const [,, afterLogin] = useContext(StoreContext)
+
+  const poll = id => setInterval(async () => {
+    try {
+      const { data } = await axios.get(`/api/approved/${id}`)
+      clearInterval(pollId)
+      afterLogin(data.accessToken)
+      window.location.assign('/profile')
+    } catch (error) {
+      console.log(error)
+    }
+  }, 2000)
+
   const [id, setId] = useState(null)
   useEffect(() => {
     axios.post('/api/auth')
