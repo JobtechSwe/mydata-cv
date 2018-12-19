@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/JobtechSwe/mydata-cv#readme",
   "dependencies": {
-    "@mydata/client": "^0.2.0",
+    "@mydata/client": "^0.3.0",
     "@smooth-ui/core-sc": "^7.0.3",
     "axios": "^0.18.0",
     "elastic-apm-js-base": "^1.0.0",
