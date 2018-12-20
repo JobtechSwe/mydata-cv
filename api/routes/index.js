@@ -8,7 +8,7 @@ module.exports = operator => {
   })
 
   router.post('/auth', async (req, res, next) => {
-    const consentRequest = await operator.request({
+    const consentRequest = await operator.consents.request({
       client_id: 'asdasd',
       scope: ['allyourbasearebelongtous']
     })
