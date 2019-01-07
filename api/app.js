@@ -12,7 +12,6 @@ app.use(express.json())
 app.use('/api', routes(operator))
 
 // Operator routes
-app.get('/jwks', operator.routes.jwks)
-app.post('/events', operator.routes.events)
+app.use(operator.routes)
 
 module.exports = app
