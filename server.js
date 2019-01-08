@@ -1,4 +1,4 @@
-const apm = require('elastic-apm-node').start({
+require('elastic-apm-node').start({
   // Overwrite service name from package.json
   // Allowed characters: a-z, A-Z, 0-9, -, _, and space
   serviceName: process.env.APP_NAME || 'mydata-cv api',
@@ -9,6 +9,7 @@ const apm = require('elastic-apm-node').start({
   // Set custom APM Server URL (default: http://localhost:8200)
   serverUrl: process.env.APM_SERVER || 'http://localhost:8200'
 })
+const operator = require('./api/adapters/operator')
 
 const next = require('next')
 
@@ -22,4 +23,5 @@ app.prepare().then(() => {
     handle(req, res)
   })
   server.listen(process.env.PORT || 4000)
+  operator.connect()
 })

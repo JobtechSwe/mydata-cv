@@ -4,7 +4,7 @@ const config = {
   port: process.env.PGPORT || '5433',
   user: process.env.PGUSER || 'postgresuser',
   password: process.env.PGPASSWORD || 'postgrespassword',
-  database: process.env.PGDATABASE || 'mydata'
+  database: process.env.PGDATABASE || 'cv'
 }
 
 const wait = (ms) => new Promise(resolve => setTimeout(() => resolve(), ms))
@@ -13,6 +13,7 @@ async function connect (attemptNo = 0) {
   try {
     const client = new Client(config)
     await client.connect()
+    console.log('connected')
     return client
   } catch (err) {
     console.warn(err)
@@ -25,11 +26,11 @@ async function connect (attemptNo = 0) {
 async function query (sql, params) {
   const conn = await connect()
   try {
-    return conn.query(sql, params)
+    return await conn.query(sql, params)
   } catch (err) {
     throw err
   } finally {
-    await conn.close()
+    await conn.end()
   }
 }
 
