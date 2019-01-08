@@ -22,4 +22,15 @@ async function connect (attemptNo = 0) {
   }
 }
 
-module.exports = { connect }
+async function query (sql, params) {
+  const conn = await connect()
+  try {
+    return conn.query(sql, params)
+  } catch (err) {
+    throw err
+  } finally {
+    await conn.close()
+  }
+}
+
+module.exports = { connect, query }

@@ -8,7 +8,8 @@
     "build": "next build",
     "dev": "nodemon --watch ./api --watch ./components --watch ./pages --watch ./services --watch server.js",
     "test": "NODE_ENV=test jest --watchAll",
-    "lint": "eslint '**/*.js'"
+    "lint": "eslint '**/*.js'",
+    "migrate": "DATABASE_URL=postgres://postgresuser:postgrespassword@localhost:5433/cv node-pg-migrate"
   },
   "repository": {
     "type": "git",
@@ -25,15 +26,17 @@
   },
   "homepage": "https://github.com/JobtechSwe/mydata-cv#readme",
   "dependencies": {
-    "@mydata/client": "^0.5.0",
+    "@mydata/client": "^0.6.0",
     "@smooth-ui/core-sc": "^7.0.3",
     "axios": "^0.18.0",
+    "changecase-objects": "^1.1.0",
     "elastic-apm-js-base": "^1.0.0",
     "elastic-apm-node": "^1.12.0",
     "express": "^4.16.3",
     "ioredis": "^4.3.0",
     "jsonwebtoken": "^8.3.0",
     "next": "^7.0.1",
+    "node-pg-migrate": "^3.14.2",
     "pg": "^7.7.1",
     "qrcode.react": "^0.8.0",
     "react": "next",

@@ -15,9 +15,9 @@ services:
     environment:
       - POSTGRES_USER=postgresuser
       - POSTGRES_PASSWORD=postgrespassword
-      - POSTGRES_DB=mydata
+      - POSTGRES_DB=cv
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgresuser -d mydata"]
+      test: ["CMD-SHELL", "pg_isready -U postgresuser -d cv"]
       interval: 10s
       timeout: 5s
       retries: 5
