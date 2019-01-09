@@ -15,6 +15,8 @@ module.exports = operator => {
     res.send(consentRequest)
   })
 
+  // TODO: This is not very secure. Anyone with the id can race the GET-request and steal the secret token.
+  // Instead, we should probably associate the consent request with a session and then log in that session once it's approved.
   router.get('/approved/:id', async (req, res, next) => {
     const result = getConsent(req.params.id)
     if (result) {
