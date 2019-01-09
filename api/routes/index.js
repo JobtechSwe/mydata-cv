@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const router = Router()
 const { getConsent } = require('../services/db')
+const { createRequest } = require('../services/consents')
 
 module.exports = operator => {
   router.get('/', (req, res, next) => {
@@ -8,11 +9,8 @@ module.exports = operator => {
   })
 
   router.post('/auth', async (req, res, next) => {
-    const consentRequest = await operator.consents.request({
-      client_id: 'asdasd',
-      scope: ['allyourbasearebelongtous']
-    })
-    res.send(consentRequest)
+    const pendingRequest = await operator.consents.request(createRequest())
+    res.send(pendingRequest)
   })
 
   // TODO: This is not very secure. Anyone with the id can race the GET-request and steal the secret token.
