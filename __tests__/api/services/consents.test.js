@@ -1,12 +1,15 @@
-const { createRequestWithExpiry } = require('../../../api/services/consents')
+const { addExpiry } = require('../../../api/services/consents')
 
-describe('createRequestWithExpiry', () => {
-  it('has expiry', () => {
-    const nowMock = () => 26743223 // timestamp in milliseconds
-    const duration = 60
+describe('addExpiry', () => {
+  it('adds correct expiry', () => {
+    const nowMock = () => 1547025969000 // timestamp in milliseconds
+    const durationInSeconds = 60
 
-    const request = createRequestWithExpiry(nowMock, duration)
+    const defaultRequest = {
+      scope: []
+    }
 
-    expect(request.expiry).toBe(26743223 / 1000 + 60)
+    const request = addExpiry(nowMock)(defaultRequest)(durationInSeconds)
+    expect(request.expiry).toBe(1547025969 + 60)
   })
 })

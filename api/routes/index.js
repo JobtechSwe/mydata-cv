@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const router = Router()
 const { getConsent } = require('../services/db')
-const { createRequest } = require('../services/consents')
+const { createDefaultRequest } = require('../services/consents')
 
 module.exports = operator => {
   router.get('/', (req, res, next) => {
@@ -9,7 +9,9 @@ module.exports = operator => {
   })
 
   router.post('/auth', async (req, res, next) => {
-    const pendingRequest = await operator.consents.request(createRequest())
+    const request = createDefaultRequest(3600 * 24 * 31)
+    console.log(request)
+    const pendingRequest = await operator.consents.request(request)
     res.send(pendingRequest)
   })
 

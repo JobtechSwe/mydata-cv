@@ -1,5 +1,5 @@
 
-const createRequestWithExpiry = (now, durationInSeconds) => ({
+const defaultRequest = {
   scope: [
     {
       domain: 'localhost:4000',
@@ -10,15 +10,14 @@ const createRequestWithExpiry = (now, durationInSeconds) => ({
       lawfulBasis: 'CONSENT',
       required: true
     }
-  ],
-  expiry: now() / 1000 + durationInSeconds
-})
+  ]
+}
 
-const createRequest = createRequestWithExpiry(Date.now, 3600 * 6)
+const addExpiry = now => obj => durationInSeconds => Object.assign({}, obj, { expiry: Math.round(now() / 1000 + durationInSeconds) })
 
 module.exports = {
-  createRequest,
-  createRequestWithExpiry // Exposed for testing purposes
+  createDefaultRequest: addExpiry(Date.now)(defaultRequest),
+  addExpiry // Exposed for testing purposes
 }
 
 // Kept here for future reference
