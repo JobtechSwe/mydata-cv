@@ -67,12 +67,15 @@ const StoreProvider = ({ ...props }) => {
   useEffect(() => {
     if (!token) { return }
 
-    (async () => {
-      const retrievedData = await read('/', token)
-      dispatch({ type: 'init', payload: retrievedData })
-      setLoaded(true)
-      console.log('has loaded data', retrievedData)
-    })()
+    read('/', token)
+      .then(retrievedData => {
+        dispatch({ type: 'init', payload: retrievedData })
+        setLoaded(true)
+        console.log('has loaded data', retrievedData)
+      })
+      .catch(error => {
+        console.error('could not load data', error)
+      })
   }, [token])
 
   useEffect(() => {
