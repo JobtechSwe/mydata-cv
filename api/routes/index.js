@@ -10,9 +10,12 @@ module.exports = operator => {
 
   router.post('/auth', async (req, res, next) => {
     const request = createDefaultRequest(3600 * 24 * 31)
-    console.log(request)
-    const pendingRequest = await operator.consents.request(request)
-    res.send(pendingRequest)
+    try {
+      const pendingRequest = await operator.consents.request(request)
+      res.send(pendingRequest)
+    } catch (error) {
+      console.error('Error when doing consent request', error)
+    }
   })
 
   // TODO: This is not very secure. Anyone with the id can race the GET-request and steal the secret token.
