@@ -4,7 +4,8 @@ const { camelCase } = require('changecase-objects')
 async function load ({ use, kid }) {
   const col = kid ? 'kid' : 'use'
   const val = kid || use
-  const { rows } = await query(`SELECT * FROM keys WHERE $1 = $2`, [ col, val ])
+  console.log(`SELECT * FROM keys WHERE ${col} = $1`, [val])
+  const { rows } = await query(`SELECT * FROM keys WHERE ${col} = $1`, [val])
   return rows.map(r => camelCase(r))
 }
 async function save ({ kid, use, publicKey, privateKey }) {
