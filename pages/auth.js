@@ -28,6 +28,9 @@ export default () => {
         setId(id)
         pollId = poll(id)
       })
+      .catch(err => {
+        console.error(err)
+      })
   }, [])
 
   return (

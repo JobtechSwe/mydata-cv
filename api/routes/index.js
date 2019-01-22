@@ -15,6 +15,7 @@ module.exports = operator => {
       res.send(pendingRequest)
     } catch (error) {
       console.error('Error when doing consent request', error)
+      next(error)
     }
   })
 
