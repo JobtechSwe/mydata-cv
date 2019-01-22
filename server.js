@@ -7,7 +7,11 @@ require('elastic-apm-node').start({
   secretToken: '',
 
   // Set custom APM Server URL (default: http://localhost:8200)
-  serverUrl: process.env.APM_SERVER || 'http://localhost:8200'
+  serverUrl: process.env.APM_SERVER || 'http://localhost:8200',
+
+  captureBody: (process.env.NODE_ENV !== 'production')
+    ? 'errors'
+    : 'off'
 })
 const operator = require('./api/adapters/operator')
 
