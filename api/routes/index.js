@@ -36,8 +36,56 @@ module.exports = operator => {
     if (!consentId) {
       return next(Error('Invalid authorization header'))
     }
-    const data = await operator.data.read(consentId, '/')
-    res.send(data)
+
+    try {
+      // const data = await operator.data.read(consentId, '/') TODO: Implement
+      const data = {
+        baseData: {
+          firstName: 'Adam',
+          lastName: 'Naeslund',
+          headline: 'Looking for opportunities'
+        },
+        education: [
+          {
+            schoolName: 'Uppsala University',
+            fieldOfStudy: 'Computer Science'
+          }
+        ],
+        languages: [
+          {
+            languageName: 'Swedish',
+            proficiency: 'Native'
+          },
+          {
+            languageName: 'English',
+            proficiency: 'Fluent'
+          },
+          {
+            languageName: 'Javascript',
+            proficiency: 'Fluent'
+          }
+        ],
+        experience: [
+          {
+            employer: 'Iteam',
+            title: 'Developer',
+            fromDate: '2017',
+            toDate: '2019',
+            description: 'Developing software and other various things'
+          },
+          {
+            employer: 'Posten AB',
+            title: 'Mail Delivery Technican Assistent Manager',
+            fromDate: '2012',
+            toDate: '2017',
+            description: 'Did things'
+          }
+        ]
+      }
+      res.send(data)
+    } catch (error) {
+      next(error)
+    }
   })
   return router
 }

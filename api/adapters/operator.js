@@ -3,8 +3,8 @@ const postgresKeyStore = require('../services/postgresKeyStore')
 const config = {
   displayName: 'My CV',
   description: 'An app for your CV online',
-  clientId: 'localhost:4000',
-  operator: 'http://localhost:3000',
+  clientId: process.env.CLIENT_ID || 'localhost:4000',
+  operator: process.env.OPERATOR_URL || 'http://localhost:3000',
   jwksUrl: '/jwks',
   eventsUrl: '/events',
   unsafe: true,

@@ -1,3 +1,4 @@
+require('dotenv').config()
 require('elastic-apm-node').start({
   // Overwrite service name from package.json
   // Allowed characters: a-z, A-Z, 0-9, -, _, and space
