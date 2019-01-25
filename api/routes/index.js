@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const router = Router()
-const { getConsent } = require('../services/db')
+const { getConsentRequest } = require('../services/db')
 const { createDefaultRequest } = require('../services/consents')
 
 module.exports = operator => {
@@ -22,7 +22,7 @@ module.exports = operator => {
   // TODO: This is not very secure. Anyone with the id can race the GET-request and steal the secret token.
   // Instead, we should probably associate the consent request with a session and then log in that session once it's approved.
   router.get('/approved/:id', async (req, res, next) => {
-    const result = getConsent(req.params.id)
+    const result = getConsentRequest(req.params.id)
     if (result) {
       res.send({ accessToken: result.id }) // TODO: Use actual accessToken instead of consentId from Operator...?
     } else {
