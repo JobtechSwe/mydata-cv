@@ -42,6 +42,8 @@ const reducer = (state, action) => {
       }
     case 'init':
       return action.payload
+    case 'clear':
+      return {}
     default:
       throw Error('Action type has to be specified')
   }

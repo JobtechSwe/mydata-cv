@@ -1,5 +1,7 @@
-import React from 'react'
-import { Typography, styled } from '@smooth-ui/core-sc'
+import React, { useContext } from 'react'
+import { Typography, styled, Button } from '@smooth-ui/core-sc'
+import { StoreContext } from '../services/StoreContext'
+import { clearAccessToken } from '../services/storage'
 
 const Navbar = styled.nav`
   height: 60px;
@@ -13,9 +15,25 @@ const Headline = styled(Typography)`
   line-height: 1.4em;
 `
 
+const LogoutBtn = styled(Button)`
+  position: absolute;
+  top: 15px;
+  right: 15px;
+`
+
 export default () => {
+  const [ , dispatch,, loaded ] = useContext(StoreContext)
+
+  const logout = () => {
+    console.log('logging out...')
+    clearAccessToken()
+    dispatch({ type: 'clear' })
+    window.location.assign('/')
+  }
+
   return (
     <Navbar>
       <Headline variant="h1">C : V</Headline>
+      {loaded && <LogoutBtn size="sm" variant="dark" onClick={logout}>Logout</LogoutBtn>}
     </Navbar>)
 }
