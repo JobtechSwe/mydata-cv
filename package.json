@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node .",
     "build": "next build",
-    "dev": "nodemon --watch ./api --watch ./components --watch ./pages --watch ./services --watch server.js",
+    "dev": "npm run migrate up && nodemon --watch ./api --watch ./components --watch ./pages --watch ./services --watch server.js",
     "test": "NODE_ENV=test jest --watchAll",
     "lint": "eslint '**/*.js'",
     "migrate": "DATABASE_URL=postgres://postgresuser:postgrespassword@localhost:5433/cv node-pg-migrate"
