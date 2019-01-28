@@ -14,8 +14,14 @@ const sub = new Redis(connectionString, {
     return Math.min(times * 50, maxReconnectTime)
   }
 })
+redis.getrange()
 
 module.exports = {
+  keys: async (...args) => redis.keys(...args),
+  search: async (pattern) => {
+    const keys = await redis.keys(pattern)
+    return Promise.all(keys.map((key) => redis.get(key)))
+  },
   get: async (...args) => redis.get(...args),
   set: async (...args) => redis.set(...args),
   del: async (...args) => redis.del(...args),
