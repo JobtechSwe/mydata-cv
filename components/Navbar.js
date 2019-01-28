@@ -22,10 +22,11 @@ const LogoutBtn = styled(Button)`
 `
 
 export default () => {
-  const [ , dispatch,, loaded ] = useContext(StoreContext)
+  const [ , dispatch,, loaded, setLoaded ] = useContext(StoreContext)
 
   const logout = () => {
     console.log('logging out...')
+    setLoaded(false)
     clearAccessToken()
     dispatch({ type: 'clear' })
     window.location.assign('/')

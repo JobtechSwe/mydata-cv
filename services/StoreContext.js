@@ -112,7 +112,7 @@ const StoreProvider = ({ ...props }) => {
     })()
   }, [data.baseData])
 
-  return <StoreContext.Provider value={[data, dispatch, afterLogin, loaded]}>{props.children}</StoreContext.Provider>
+  return <StoreContext.Provider value={[data, dispatch, afterLogin, loaded, setLoaded]}>{props.children}</StoreContext.Provider>
 }
 
 export {
