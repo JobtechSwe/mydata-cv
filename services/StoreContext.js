@@ -41,17 +41,16 @@ const reducer = (state, action) => {
         baseData: action.payload
       }
     case 'init':
-      return action.payload
+      return { loaded: true, ...action.payload }
     case 'clear':
-      return {}
+      return { loaded: false }
     default:
       throw Error('Action type has to be specified')
   }
 }
 
 const StoreProvider = ({ ...props }) => {
-  const [data, dispatch] = useReducer(reducer, {})
-  const [loaded, setLoaded] = useState(false)
+  const [data, dispatch] = useReducer(reducer, { loaded: false })
   const [token, setToken] = useState(undefined)
 
   const afterLogin = (thing) => {
@@ -72,7 +71,6 @@ const StoreProvider = ({ ...props }) => {
     read('/', token)
       .then(retrievedData => {
         dispatch({ type: 'init', payload: retrievedData })
-        setLoaded(true)
         console.log('has loaded data', retrievedData)
       })
       .catch(error => {
@@ -80,7 +78,7 @@ const StoreProvider = ({ ...props }) => {
       })
   }, [token])
 
-  return <StoreContext.Provider value={[data, dispatch, afterLogin, loaded, setLoaded]}>{props.children}</StoreContext.Provider>
+  return <StoreContext.Provider value={[data, dispatch, afterLogin]}>{props.children}</StoreContext.Provider>
 }
 
 export {

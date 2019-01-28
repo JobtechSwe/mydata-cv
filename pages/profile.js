@@ -9,7 +9,7 @@ import { DotLoader } from 'react-spinners'
 import { Transition } from 'react-spring'
 
 export default () => {
-  const [,,, loaded] = useContext(StoreContext)
+  const [{ loaded }] = useContext(StoreContext)
 
   if (!loaded) {
     return (
