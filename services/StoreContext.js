@@ -80,38 +80,6 @@ const StoreProvider = ({ ...props }) => {
       })
   }, [token])
 
-  useEffect(() => {
-    if (!loaded) { return }
-
-    (async () => {
-      // await client.write('/languages', data.languages, token)
-    })()
-  }, [data.languages])
-
-  useEffect(() => {
-    if (!loaded) { return }
-
-    (async () => {
-      // await client.write('/education', data.education, token)
-    })()
-  }, [data.education])
-
-  useEffect(() => {
-    if (!loaded) { return }
-
-    (async () => {
-      // await client.write('/experience', data.experience, token)
-    })()
-  }, [data.experience])
-
-  useEffect(() => {
-    if (!loaded) { return }
-
-    (async () => {
-      // await client.write('/baseData', data.baseData, token)
-    })()
-  }, [data.baseData])
-
   return <StoreContext.Provider value={[data, dispatch, afterLogin, loaded, setLoaded]}>{props.children}</StoreContext.Provider>
 }
 
