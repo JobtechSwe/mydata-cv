@@ -1,12 +1,3 @@
-export const setId = (accountId) => {
-  sessionStorage.setItem('cv/account_id', accountId)
-}
-
-export const getId = () => {
-  return sessionStorage.getItem('cv/account_id')
-}
-
-export const clearId = () => sessionStorage.removeItem('cv/account_id')
 
 export const setAccessToken = (access_token) => {
   sessionStorage.setItem('cv/access_token', access_token)
