@@ -24,21 +24,22 @@ module.exports = operator => {
   router.get('/approved/:id', async (req, res, next) => {
     const result = getConsentRequest(req.params.id)
     if (result) {
-      res.send({ accessToken: result.id }) // TODO: Use actual accessToken instead of consentId from Operator...?
+      res.send({ accessToken: result.accessToken })
     } else {
       res.sendStatus(404)
     }
   })
 
   router.get('/data', async (req, res, next) => {
-    const consentId = req.headers.authorization.split('Bearer ')[1]
+    const token = req.headers.authorization.split('Bearer ')[1]
+    // const data = await client.data.auth(token).get(domain, area)
+    // .... .set(domain, area, value)
 
-    if (!consentId) {
+    if (!token) {
       return next(Error('Invalid authorization header'))
     }
 
     try {
-      // const data = await operator.data.read(consentId, '/') TODO: Implement
       const data = {
         baseData: {
           firstName: 'Adam',

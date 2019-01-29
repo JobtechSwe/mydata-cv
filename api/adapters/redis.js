@@ -14,7 +14,6 @@ const sub = new Redis(connectionString, {
     return Math.min(times * 50, maxReconnectTime)
   }
 })
-redis.getrange()
 
 module.exports = {
   keys: async (...args) => redis.keys(...args),

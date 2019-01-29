@@ -1,10 +1,10 @@
 
-export const setAccessToken = (access_token) => {
-  sessionStorage.setItem('cv/access_token', access_token)
+export const setAccessToken = accessToken => {
+  sessionStorage.setItem('cv/accessToken', accessToken)
 }
 
 export const getAccessToken = () => {
-  return sessionStorage.getItem('cv/access_token')
+  return sessionStorage.getItem('cv/accessToken')
 }
 
-export const clearAccessToken = () => sessionStorage.removeItem('cv/access_token')
+export const clearAccessToken = () => sessionStorage.removeItem('cv/accessToken')

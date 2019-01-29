@@ -3,17 +3,19 @@ import { Box, Typography } from '@smooth-ui/core-sc'
 import axios from 'axios'
 import QRCode from 'qrcode.react'
 import { StoreContext } from '../services/StoreContext'
+import * as storage from '../services/storage'
 
 let pollId
 
 export default () => {
-  const [,, afterLogin] = useContext(StoreContext)
+  const [, dispatch] = useContext(StoreContext)
 
   const poll = id => setInterval(async () => {
     try {
       const { data } = await axios.get(`/api/approved/${id}`)
       clearInterval(pollId)
-      afterLogin(data.accessToken)
+      storage.setAccessToken(data.accessToken)
+      dispatch({ type: 'SET_TOKEN', payload: data.accessToken })
       window.location.assign('/profile')
     } catch (error) {
       console.log(error)

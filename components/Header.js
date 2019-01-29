@@ -20,7 +20,7 @@ export default () => {
   }
 
   const save = () => {
-    dispatch({ type: 'update baseData', payload: draft })
+    dispatch({ type: 'UPDATE_BASEDATA', payload: draft })
     setDraft(undefined)
   }
 

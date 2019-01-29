@@ -13,8 +13,8 @@ export default () => {
 
   const onSave = async (entry) => {
     typeof draftIndex === 'undefined'
-      ? await dispatch({ type: 'add education', payload: { entry } })
-      : await dispatch({ type: 'update education', payload: { entry, index: draftIndex } })
+      ? await dispatch({ type: 'ADD_EDUCATION', payload: { entry } })
+      : await dispatch({ type: 'UPDATE_EDUCATION', payload: { entry, index: draftIndex } })
     setModal(false)
   }
 

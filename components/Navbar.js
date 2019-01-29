@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Typography, styled, Button } from '@smooth-ui/core-sc'
 import { StoreContext } from '../services/StoreContext'
-import { clearAccessToken } from '../services/storage'
+import * as storage from './../services/storage'
 
 const Navbar = styled.nav`
   height: 60px;
@@ -25,9 +25,8 @@ export default () => {
   const [{ loaded }, dispatch] = useContext(StoreContext)
 
   const logout = () => {
-    console.log('logging out...')
-    clearAccessToken()
-    dispatch({ type: 'clear' })
+    dispatch({ type: 'CLEAR' })
+    storage.clearAccessToken()
     window.location.assign('/')
   }
 

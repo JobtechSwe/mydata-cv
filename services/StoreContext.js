@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useReducer } from 'react'
+import React, { createContext, useEffect, useReducer } from 'react'
 import * as storage from './storage'
 import { read } from './data'
 
@@ -6,44 +6,46 @@ const StoreContext = createContext({})
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'add experience':
+    case 'ADD_EXPERIENCE':
       return { ...state,
         experience: state.experience
           ? state.experience.concat(action.payload.entry)
           : [action.payload.entry]
       }
-    case 'update experience':
+    case 'UPDATE_EXPERIENCE':
       return { ...state,
         experience: state.experience.map((x, i) => action.payload.index !== i ? x : Object.assign({}, x, action.payload.entry))
       }
-    case 'add language':
+    case 'ADD_LANGUAGE':
       return { ...state,
         languages: state.languages
           ? state.languages.concat(action.payload.entry)
           : [action.payload.entry]
       }
-    case 'update language':
+    case 'UPDATE_LANGUAGE':
       return { ...state,
         languages: state.languages.map((x, i) => action.payload.index !== i ? x : Object.assign({}, x, action.payload.entry))
       }
-    case 'add education':
+    case 'ADD_EDUCATION':
       return { ...state,
         education: state.education
           ? state.education.concat(action.payload.entry)
           : [action.payload.entry]
       }
-    case 'update education':
+    case 'UPDATE_EDUCATION':
       return { ...state,
         education: state.education.map((x, i) => action.payload.index !== i ? x : Object.assign({}, x, action.payload.entry))
       }
-    case 'update baseData':
+    case 'UPDATE_BASEDATA':
       return { ...state,
         baseData: action.payload
       }
-    case 'init':
-      return { loaded: true, ...action.payload }
-    case 'clear':
+    case 'LOAD_DATA':
+      return { ...state, loaded: true, ...action.payload }
+    case 'CLEAR':
       return { loaded: false }
+    case 'SET_TOKEN':
+      return { ...state, token: action.payload }
     default:
       throw Error('Action type has to be specified')
   }
@@ -51,34 +53,27 @@ const reducer = (state, action) => {
 
 const StoreProvider = ({ ...props }) => {
   const [data, dispatch] = useReducer(reducer, { loaded: false })
-  const [token, setToken] = useState(undefined)
-
-  const afterLogin = (thing) => {
-    storage.setAccessToken(thing)
-    setToken(thing)
-  }
 
   useEffect(() => {
     const tokenFromStorage = storage.getAccessToken()
-    if (tokenFromStorage) {
-      setToken(storage.getAccessToken())
+    if (tokenFromStorage && !data.token) {
+      dispatch({ type: 'SET_TOKEN', payload: tokenFromStorage })
     }
   }, [])
 
   useEffect(() => {
-    if (!token) { return }
+    if (!data.token) { return }
 
-    read('/', token)
+    read('/', data.token)
       .then(retrievedData => {
-        dispatch({ type: 'init', payload: retrievedData })
-        console.log('has loaded data', retrievedData)
+        dispatch({ type: 'LOAD_DATA', payload: retrievedData })
       })
       .catch(error => {
-        console.error('could not load data', error)
+        console.error('could not LOAD_DATA', error)
       })
-  }, [token])
+  }, [data.token])
 
-  return <StoreContext.Provider value={[data, dispatch, afterLogin]}>{props.children}</StoreContext.Provider>
+  return <StoreContext.Provider value={[data, dispatch]}>{props.children}</StoreContext.Provider>
 }
 
 export {
