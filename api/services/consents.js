@@ -1,8 +1,10 @@
 
+const domain = 'localhost:4000'
+
 const defaultRequest = {
   scope: [
     {
-      domain: 'localhost:4000',
+      domain,
       area: 'cv',
       description: 'A list of your work experiences, educations, language proficiencies and so on that you have entered in the service.',
       permissions: [ 'write' ],
@@ -17,6 +19,7 @@ const addExpiry = now => obj => durationInSeconds => Object.assign({}, obj, { ex
 
 module.exports = {
   createDefaultRequest: addExpiry(Date.now)(defaultRequest),
+  domain,
   addExpiry // Exposed for testing purposes
 }
 

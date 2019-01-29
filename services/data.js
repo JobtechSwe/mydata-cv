@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-export const read = async (path, token) => {
+export const read = async (path, accessToken) => {
   const { data } = await axios.get('/api/data', {
     headers: {
-      'Authorization': 'Bearer ' + token
+      'Authorization': 'Bearer ' + accessToken
     }
   })
   return data
