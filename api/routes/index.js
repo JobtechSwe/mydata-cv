@@ -4,10 +4,6 @@ const { getConsentRequest } = require('../services/db')
 const { createDefaultRequest, domain } = require('../services/consents')
 
 module.exports = operator => {
-  router.get('/', (req, res, next) => {
-    res.send(require(`${process.cwd()}/package.json`))
-  })
-
   router.post('/auth', async (req, res, next) => {
     const request = createDefaultRequest(3600 * 24 * 31)
     try {

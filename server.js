@@ -14,7 +14,7 @@ require('elastic-apm-node').start({
     ? 'errors'
     : 'off'
 })
-const operator = require('./api/adapters/operator')
+console.log(`NODE_ENV: ${process.env.NODE_ENV}`)
 
 const next = require('next')
 
@@ -28,5 +28,4 @@ app.prepare().then(() => {
     handle(req, res)
   })
   server.listen(process.env.PORT || 4000)
-  operator.connect()
 })

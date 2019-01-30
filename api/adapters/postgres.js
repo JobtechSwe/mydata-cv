@@ -13,7 +13,6 @@ async function connect (attemptNo = 0) {
   try {
     const client = new Client(config)
     await client.connect()
-    console.log('connected')
     return client
   } catch (err) {
     console.warn(err)
