@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const router = Router()
 const { getConsentRequest } = require('../services/db')
-const { createDefaultRequest, domain } = require('../services/consents')
+const { createDefaultRequest, domain, area } = require('../services/consents')
 
 module.exports = operator => {
   router.post('/auth', async (req, res, next) => {
@@ -33,18 +33,30 @@ module.exports = operator => {
     }
 
     try {
-      const data = await operator
-        .data
-        .auth(accessToken)
-        .get({
-          domain,
-          area: '/'
-        })
+      const data = await operator.data.auth(accessToken).read({ domain, area })
+      const json = JSON.parse(data[domain][area]) || {}
 
-      res.send(data)
+      res.send(json)
     } catch (error) {
       next(error)
     }
   })
+
+  router.post('/data', async (req, res, next) => {
+    const accessToken = req.headers.authorization.split('Bearer ')[1]
+    if (!accessToken) {
+      return next(Error('Invalid authorization header'))
+    }
+
+    try {
+      const data = req.body
+      await operator.data.auth(accessToken).write({ domain, area, data })
+
+      res.sendStatus(201)
+    } catch (error) {
+      next(error)
+    }
+  })
+
   return router
 }
