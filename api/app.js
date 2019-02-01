@@ -3,7 +3,6 @@ const routes = require('./routes')
 const { saveConsent, saveConsentRequest } = require('./services/db')
 const operator = require('./adapters/operator')
 const logger = require('morgan')
-operator.connect()
 
 operator.events.on('CONSENT_APPROVED', consent => {
   saveConsent(consent)

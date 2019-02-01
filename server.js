@@ -23,9 +23,13 @@ const app = next({ dev })
 const handle = app.getRequestHandler()
 const server = require('./api/app')
 
+const operator = require('./api/adapters/operator')
+
 app.prepare().then(() => {
   server.get('*', (req, res) => {
     handle(req, res)
   })
-  server.listen(process.env.PORT || 4000)
+  server.listen(process.env.PORT || 4000, () => {
+    operator.connect()
+  })
 })
