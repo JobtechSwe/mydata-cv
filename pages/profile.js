@@ -6,40 +6,40 @@ import Education from '../components/sections/Education'
 import Languages from '../components/sections/Languages'
 import { StoreContext } from '../services/StoreContext'
 import { DotLoader } from 'react-spinners'
-import { Transition } from 'react-spring'
+
+const LoadingScreen = () => <Box
+  ml="auto"
+  mr="auto"
+  maxWidth={960}
+  height="100vh"
+  display="flex"
+  justifyContent="center"
+  alignItems="center"
+>
+  <DotLoader
+    sizeUnit={'px'}
+    size={60}
+    color={theme.brick}
+    loading
+  />
+</Box>
+
+const Profile = () => <Box
+  ml="auto"
+  mr="auto"
+  maxWidth={960}
+>
+  <Header />
+  <Box>
+    <Experience />
+    <Education />
+    <Languages />
+  </Box>
+</Box>
 
 export default () => {
   const [{ loaded }] = useContext(StoreContext)
-
-  if (!loaded) {
-    return (
-      <Box ml="auto" mr="auto" maxWidth={960} height="100vh" display="flex" justifyContent="center" alignItems="center">
-        <DotLoader
-          sizeUnit={'px'}
-          size={60}
-          color={theme.brick}
-          loading
-        />
-      </Box>)
-  }
-
-  return (
-    <Transition
-      items={[loaded]}
-      from={{ opacity: 0 }}
-      enter={{ opacity: 1 }}
-      leave={{ opacity: 0 }}
-    >
-      { () => props =>
-        <Box ml="auto" mr="auto" maxWidth={960} style={props}>
-          <Header />
-          <Box>
-            <Experience />
-            <Education />
-            <Languages />
-          </Box>
-        </Box>
-      }
-    </Transition>
-  )
+  return loaded
+    ? <Profile />
+    : <LoadingScreen />
 }
