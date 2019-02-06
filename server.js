@@ -1,19 +1,15 @@
 require('dotenv').config()
-require('elastic-apm-node').start({
-  // Overwrite service name from package.json
-  // Allowed characters: a-z, A-Z, 0-9, -, _, and space
-  serviceName: process.env.APP_NAME || 'mydata-cv api',
-
-  // Use if APM Server requires a token
-  secretToken: '',
-
-  // Set custom APM Server URL (default: http://localhost:8200)
-  serverUrl: process.env.APM_SERVER || 'http://localhost:8200',
-
-  captureBody: (process.env.NODE_ENV !== 'production')
-    ? 'errors'
-    : 'off'
-})
+if (process.env.APM_SERVER) {
+  require('elastic-apm-node').start({
+    serviceName: process.env.APP_NAME || 'mydata-cv api', // Allowed characters: a-z, A-Z, 0-9, -, _, and space
+    secretToken: process.env.APM_TOKEN || '', // Use if APM Server requires a token
+    serverUrl: process.env.APM_SERVER, // Set APM Server URL
+    captureBody: (process.env.NODE_ENV === 'production') // Don't save request body in production
+      ? 'off'
+      : 'errors'
+  })
+  console.log('APM instrumentation done')
+}
 console.log(`NODE_ENV: ${process.env.NODE_ENV}`)
 
 const next = require('next')
