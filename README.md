@@ -2,7 +2,7 @@
 A Data Source/Data Sink offering a searchable CV
 
 # Configuration
-By default the service uses `localhost` for all paths, to make it work with the other parts of MyData create a file named `.env` in the project directory containing URLs needed for the services to find each other, example for a developers machine:
+Create a file named `.env` in the project directory containing URLs needed for the services to find each other, example for a developers machine:
 ```
 NODE_ENV=development
 CLIENT_ID=http://192.168.1.42:4000
