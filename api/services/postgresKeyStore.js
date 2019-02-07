@@ -1,45 +1,53 @@
-const pg = require('../adapters/postgres')
-const redis = require('../adapters/redis')
+const { query } = require('../adapters/postgres')
 const { camelCase } = require('changecase-objects')
+const MemoryKeyStore = require('@mydata/client/lib/memoryKeyStore')
+const memoryKeyStore = new MemoryKeyStore()
 
 async function loadFromPostgres ({ use, kid }) {
   const col = kid ? 'kid' : 'use'
   const val = kid || use
-  const { rows } = await pg.query(`SELECT * FROM keys WHERE ${col} = $1`, [val])
+  const { rows } = await query(`SELECT * FROM keys WHERE ${col} = $1`, [val])
   return rows.map(r => camelCase(r))
 }
-
-async function loadFromRedis ({ use, kid }) {
-  let pattern
-  if (kid && use) pattern = `key|${use}|${kid}`
-  else if (kid) pattern = `key|*|${kid}`
-  else if (use) pattern = `key|${use}|*`
-  else pattern = 'key|*'
-  const keys = await redis.search(pattern)
-  return keys.map(k => JSON.parse(k))
-}
-
-async function load ({ use, kid }) {
-  const [perm, temp] = await Promise.all([
-    loadFromPostgres({ use, kid }),
-    loadFromRedis({ use, kid })
+async function getKey (kid) {
+  const [pg, mem] = await Promise.all([
+    loadFromPostgres({ kid }),
+    memoryKeyStore.getKey(kid)
   ])
-  return perm.concat(temp)
+  console.log(pg, mem)
+  return pg.length ? pg[0] : mem
 }
-async function save ({ kid, use, publicKey, privateKey }) {
-  await pg.query(`INSERT INTO keys (kid, use, public_key, private_key) VALUES ($1, $2, $3, $4)`, [ kid, use, publicKey, privateKey ])
+async function getKeys (use) {
+  const [pg, mem] = await Promise.all([
+    loadFromPostgres({ use }),
+    memoryKeyStore.getKeys(use)
+  ])
+  return pg.concat(mem)
+}
+async function saveKey ({ kid, use, publicKey, privateKey }, ttl) {
+  if (!ttl) {
+    await query(`INSERT INTO keys (kid, use, public_key, private_key) VALUES ($1, $2, $3, $4)`, [ kid, use, publicKey, privateKey ])
+  } else {
+    memoryKeyStore.saveKey({ kid, use, publicKey, privateKey }, ttl)
+  }
   return { kid, use, publicKey, privateKey }
 }
-async function remove (kid) {
-  await pg.query(`DELETE FROM keys WHERE kid = $1`, [ kid ])
+async function removeKey (kid) {
+  await Promise.all([
+    query(`DELETE FROM keys WHERE kid = $1`, [ kid ]),
+    memoryKeyStore.removeKey(kid)
+  ])
 }
-async function saveTemp ({ kid, use, publicKey, privateKey }, ttl) {
-  await redis.set(`key|${use}|${kid}`, JSON.stringify({ kid, use, publicKey, privateKey }), 'PX', ttl)
-  return { kid, use, publicKey, privateKey }
-}
-async function removeTemp (kid) {
-  const keys = await redis.keys(`key|*|${kid}`)
-  await Promise.all(keys.map(k => redis.del(k)))
+async function updateTTL (kid, ttl) {
+  if (!ttl) {
+    const key = await memoryKeyStore.getKey(kid)
+    await Promise.all([
+      saveKey(key),
+      memoryKeyStore.removeKey(kid)
+    ])
+  } else {
+    await memoryKeyStore.updateTTL(kid, ttl)
+  }
 }
 
-module.exports = { load, save, saveTemp, remove, removeTemp }
+module.exports = { getKey, getKeys, saveKey, removeKey, updateTTL }

@@ -5,8 +5,8 @@ const config = {
   description: 'An app for your CV online',
   clientId: process.env.CLIENT_ID || 'http://localhost:4000',
   operator: process.env.OPERATOR_URL || 'http://localhost:3000',
-  jwksUrl: '/jwks',
-  eventsUrl: '/events',
+  jwksPath: '/jwks',
+  eventsPath: '/events',
   clientKeys: {
     publicKey:
       '-----BEGIN RSA PUBLIC KEY-----\nMIGJAoGBAMcq3gQT5ZpoDr73G5HrQpsvuB+fsgQqdKtfIM5kJLB7mmoOUwxoD+bG\nIrvC+bIHBmtQE+SudYjLtYOjEX3HnoPw2oE7+zNhIlRFOBB2aGlMozWzssJqqfhA\nvDdkZGeS8SfJjo1VjozxA+iQVjjMmU2+Wnw1Z0cY1p3+OZchkqOnAgMBAAE=\n-----END RSA PUBLIC KEY-----\n',
