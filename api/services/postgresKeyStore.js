@@ -26,7 +26,12 @@ async function getKeys (use) {
 }
 async function saveKey ({ kid, use, publicKey, privateKey }, ttl) {
   if (!ttl) {
-    await query(`INSERT INTO keys (kid, use, public_key, private_key) VALUES ($1, $2, $3, $4)`, [ kid, use, publicKey, privateKey ])
+    const sql = `
+      INSERT INTO keys (kid, use, public_key, private_key)
+      VALUES ($1, $2, $3, $4)
+      ON CONFLICT (kid) DO NOTHING
+    `
+    await query(sql, [ kid, use, publicKey, privateKey ])
   } else {
     memoryKeyStore.saveKey({ kid, use, publicKey, privateKey }, ttl)
   }
